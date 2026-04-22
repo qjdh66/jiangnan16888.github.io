@@ -27,6 +27,13 @@ body{background:var(--bg);color:var(--text);min-height:100vh;padding:20px;transi
 .search-main{display:flex;gap:10px}
 .search-input{flex:1;padding:14px 16px;border-radius:12px;border:1px solid var(--border);background:var(--bg);color:var(--text);outline:none;font-size:16px}
 .search-btn{padding:14px 20px;border-radius:12px;background:var(--accent);color:#fff;border:none;font-weight:500;cursor:pointer}
+.result-box{margin-top:15px;display:none}
+.result-title{font-size:16px;color:var(--sub);margin-bottom:10px}
+.result-list{display:flex;flex-direction:column;gap:8px}
+.result-item{display:block;padding:12px 14px;background:var(--bg);border:1px solid var(--border);border-radius:10px;text-decoration:none;color:var(--text)}
+.result-item:hover{background:var(--hover);border-color:var(--accent)}
+.result-name{font-weight:500;margin-bottom:4px}
+.result-url{font-size:12px;color:var(--sub)}
 .cat{margin-bottom:26px}
 .cat-title{font-size:17px;font-weight:600;margin-bottom:12px;color:var(--text)}
 .link-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px}
@@ -35,14 +42,33 @@ body{background:var(--bg);color:var(--text);min-height:100vh;padding:20px;transi
 .link-icon{width:26px;height:26px;display:flex;align-items:center;justify-content:center;border-radius:8px;font-weight:bold;color:#fff;font-size:14px}
 .footer{text-align:center;margin-top:50px;padding-top:20px;border-top:1px solid var(--border);color:var(--sub);font-size:14px}
 .copyright{margin-bottom:5px}
+
+/* 弹窗广告样式 */
+.ad-modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);display:flex;align-items:center;justify-content:center;z-index:9999}
+.ad-box{background:var(--card);width:90%;max-width:420px;border-radius:16px;box-shadow:0 10px 40px rgba(0,0,0,0.3);padding:24px;text-align:center;position:relative}
+.ad-close{position:absolute;top:12px;right:14px;font-size:20px;cursor:pointer;color:var(--sub)}
+.ad-title{font-size:20px;font-weight:700;margin-bottom:12px;color:var(--text)}
+.ad-content{font-size:15px;color:var(--sub);line-height:1.6;margin-bottom:20px}
+.ad-btn{display:inline-block;padding:12px 24px;background:var(--accent);color:#fff;border-radius:10px;text-decoration:none;font-weight:500}
 </style>
 </head>
 <body>
+
+<!-- 弹窗广告（打开网站自动弹出） -->
+<div class="ad-modal" id="adModal">
+    <div class="ad-box">
+        <div class="ad-close" id="adClose">×</div>
+        <div class="ad-title">变现项目</div>
+        <div class="ad-content">互联网变现项目、小白0基础快速上手、月入10000+。</div>
+        <a href="https://qm.qq.com/q/VJWvxcn4yc" target="_blank" class="ad-btn">查看详情</a>
+    </div>
+</div>
+
 <div class="container">
 <div class="header">
 <button class="toggle-btn" id="toggle">切换模式</button>
 <div class="logo">轻简导航</div>
-<div class="contact">站长微信：123456 | 商务合作：123456</div>
+<div class="contact">站长微信：xxxxxx | 商务合作：xxxx@qq.com</div>
 </div>
 
 <div class="search-box">
@@ -50,29 +76,25 @@ body{background:var(--bg);color:var(--text);min-height:100vh;padding:20px;transi
 <input type="text" class="search-input" id="kw" placeholder="输入关键词搜索...">
 <button class="search-btn" id="searchBtn">搜索</button>
 </div>
-</div>
-
-<div class="cat">
-<div class="cat-title">AI绘画工具</div>
-<div class="link-grid">
-<a class="link-item" href="https://www.midjourney.com/"><div class="link-icon" style="background:#4e9af1">MJ</div>Midjourney</a>
-<a class="link-item" href="https://stablediffusionweb.com/"><div class="link-icon" style="background:#25f">SD</div>Stable Diffusion</a>
-<a class="link-item" href="https://www.canva.cn/"><div class="link-icon" style="background:#fb7299">canva</div>canva</a>
-<a class="link-item" href="https://clipdrop.co/"><div class="link-icon" style="background:#0f88eb">Clipdrop</div>Clipdrop</a>
-<a class="link-item" href="https://www.logosc.cn/"><div class="link-icon" style="background:#c10d0c">标</div>标小志</a>
+<div class="result-box" id="resultBox">
+<div class="result-title">搜索结果：</div>
+<div class="result-list" id="resultList"></div>
 </div>
 </div>
 
 <div class="cat">
-<div class="cat-title">AI网站</div>
+<div class="cat-title">常用网站</div>
 <div class="link-grid">
-<a class="link-item" href="https://www.doubao.com"><div class="link-icon" style="background:#165DFF">豆</div>豆包</a>
-<a class="link-item" href="https://jimeng.jianying.com"><div class="link-icon" style="background:#7B66FF">即</div>即梦</a>
-<a class="link-item" href="https://klingai.com"><div class="link-icon" style="background:#FF6A00">可</div>可灵</a>
+<a class="link-item" href="https://www.baidu.com"><div class="link-icon" style="background:#4e9af1">百</div>百度</a>
+<a class="link-item" href="https://www.douyin.com"><div class="link-icon" style="background:#25f">抖</div>抖音</a>
+<a class="link-item" href="https://www.bilibili.com"><div class="link-icon" style="background:#fb7299">B</div>B站</a>
+<a class="link-item" href="https://www.zhihu.com"><div class="link-icon" style="background:#0f88eb">知</div>知乎</a>
+<a class="link-item" href="https://www.163.com"><div class="link-icon" style="background:#c10d0c">网</div>网易</a>
+<a class="link-item" href="https://www.qq.com"><div class="link-icon" style="background:#12b7f5">Q</div>QQ</a>
 </div>
 </div>
 
-  <div class="cat">
+<div class="cat">
 <div class="cat-title">AI（国外）文本工具</div>
 <div class="link-grid">
 <a class="link-item" href="http://chat.openai.com/"><div class="link-icon" style="background:#10a37f">GPT</div>ChatGPT</a>
@@ -127,6 +149,7 @@ body{background:var(--bg);color:var(--text);min-height:100vh;padding:20px;transi
 </div>
 
 <script>
+// 主题切换
 const toggle=document.getElementById('toggle');
 const current=localStorage.getItem('theme')||'light';
 document.documentElement.setAttribute('data-theme',current);
@@ -137,14 +160,32 @@ localStorage.setItem('theme',now);
 toggle.textContent=now==='dark'?'明亮模式':'暗黑模式';
 });
 toggle.textContent=current==='dark'?'明亮模式':'暗黑模式';
+
+// 搜索功能
 const kw=document.getElementById('kw');
 const searchBtn=document.getElementById('searchBtn');
-function go(url){
-const v=kw.value.trim();
-if(v)window.open(url+encodeURIComponent(v));
-}
-searchBtn.addEventListener('click',()=>go('https://www.baidu.com/s?wd='));
-kw.addEventListener('keypress',e=>e.key==='Enter'&&go('https://www.baidu.com/s?wd='));
+const resultBox=document.getElementById('resultBox');
+const resultList=document.getElementById('resultList');
+const sites = [
+{name:"百度",url:"https://www.baidu.com"},{name:"抖音",url:"https://www.douyin.com"},{name:"B站",url:"https://www.bilibili.com"},{name:"知乎",url:"https://www.zhihu.com"},{name:"网易",url:"https://www.163.com"},{name:"QQ",url:"https://www.qq.com"},
+{name:"ChatGPT",url:"http://chat.openai.com/"},{name:"Claude",url:"https://www.anthropic.com/product"},{name:"Bard",url:"https://bard.google.com/"},{name:"Copilot",url:"https://copilot.microsoft.com/"},{name:"Grok",url:"https://grok.x.ai/"},{name:"Poe",url:"https://poe.com/login"},{name:"Notion AI",url:"https://www.notion.so/product/ai"},
+{name:"文心一言",url:"https://yiyan.baidu.com/"},{name:"通义千问",url:"https://tongyi.aliyun.com/qianwen/"},{name:"智谱清言",url:"https://chatglm.cn/"},{name:"Kimi Chat",url:"https://kimi.moonshot.cn/"},{name:"豆包",url:"https://www.doubao.com/"},
+{name:"GitHub",url:"https://github.com"},{name:"CodePen",url:"https://codepen.io"},{name:"阿里图标",url:"https://www.iconfont.cn"},{name:"在线工具",url:"https://tool.lu"},
+{name:"腾讯视频",url:"https://v.qq.com"},{name:"爱奇艺",url:"https://www.iqiyi.com"},{name:"优酷",url:"https://www.youku.com"}
+];
+function doSearch(){
+const key=kw.value.trim().toLowerCase();resultList.innerHTML='';if(!key){resultBox.style.display='none';return;}
+let matches=sites.filter(s=>s.name.toLowerCase().includes(key)||s.url.toLowerCase().includes(key));
+if(matches.length===0){resultList.innerHTML='<div style="padding:10px;color:var(--sub)">未找到相关网站</div>';}
+else{matches.forEach(item=>{let a=document.createElement('a');a.className='result-item';a.href=item.url;a.target='_blank';a.innerHTML=`<div class="result-name">${item.name}</div><div class="result-url">${item.url}</div>`;resultList.appendChild(a);});}
+resultBox.style.display='block';}
+searchBtn.addEventListener('click',doSearch);kw.addEventListener('keypress',e=>e.key==='Enter'&&doSearch());
+
+// 弹窗广告
+const adModal=document.getElementById('adModal');
+const adClose=document.getElementById('adClose');
+adClose.onclick=()=>{adModal.style.display='none';}
+window.onclick=(e)=>{if(e.target===adModal){adModal.style.display='none';}}
 </script>
 </body>
 </html>
