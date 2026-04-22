@@ -3,189 +3,582 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>轻简导航 · QuickNav</title>
-<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iIzI1NjNlYiIvPjx0ZXh0IHg9IjUwIiB5PSI1NSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjUwIiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSI+UU48L3RleHQ+PC9zdmc+">
+<title>导航系统</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
-:root{
---bg:#f8fafc;--card:#fff;--text:#1e293b;--sub:#64748b;
---border:#e2e8f0;--accent:#2563eb;--hover:#eff6ff;
---shadow:0 4px 20px rgba(0,0,0,0.05)
-}
-[data-theme="dark"]{
---bg:#0f172a;--card:#1e293b;--text:#f1f5f9;--sub:#94a3b8;
---border:#334155;--accent:#3b82f6;--hover:#273549;
---shadow:0 4px 20px rgba(0,0,0,0.2)
-}
-body{background:var(--bg);color:var(--text);min-height:100vh;padding:20px;transition:all 0.3s}
-.container{max-width:960px;margin:0 auto}
-.header{text-align:center;margin-bottom:24px;position:relative}
-.logo{font-size:38px;font-weight:700;color:var(--accent);margin-bottom:6px}
-.contact{font-size:15px;color:var(--sub);margin-bottom:10px}
-.toggle-btn{position:absolute;top:0;right:0;padding:8px 12px;border-radius:10px;border:1px solid var(--border);background:var(--card);color:var(--text);cursor:pointer}
-.search-box{background:var(--card);border-radius:16px;box-shadow:var(--shadow);padding:16px;margin-bottom:30px}
-.search-main{display:flex;gap:10px}
-.search-input{flex:1;padding:14px 16px;border-radius:12px;border:1px solid var(--border);background:var(--bg);color:var(--text);outline:none;font-size:16px}
-.search-btn{padding:14px 20px;border-radius:12px;background:var(--accent);color:#fff;border:none;font-weight:500;cursor:pointer}
-.result-box{margin-top:15px;display:none}
-.result-title{font-size:16px;color:var(--sub);margin-bottom:10px}
-.result-list{display:flex;flex-direction:column;gap:8px}
-.result-item{display:block;padding:12px 14px;background:var(--bg);border:1px solid var(--border);border-radius:10px;text-decoration:none;color:var(--text)}
-.result-item:hover{background:var(--hover);border-color:var(--accent)}
-.result-name{font-weight:500;margin-bottom:4px}
-.result-url{font-size:12px;color:var(--sub)}
-.cat{margin-bottom:26px}
-.cat-title{font-size:17px;font-weight:600;margin-bottom:12px;color:var(--text)}
-.link-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px}
-.link-item{display:flex;align-items:center;gap:10px;padding:12px;border-radius:12px;background:var(--card);text-decoration:none;color:var(--text);transition:0.2s;border:1px solid transparent}
-.link-item:hover{background:var(--hover);border-color:var(--accent)}
-.link-icon{width:26px;height:26px;display:flex;align-items:center;justify-content:center;border-radius:8px;font-weight:bold;color:#fff;font-size:14px}
-.footer{text-align:center;margin-top:50px;padding-top:20px;border-top:1px solid var(--border);color:var(--sub);font-size:14px}
-.copyright{margin-bottom:5px}
+*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
 
-/* 弹窗广告样式 */
-.ad-modal{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.6);display:flex;align-items:center;justify-content:center;z-index:9999}
-.ad-box{background:var(--card);width:90%;max-width:420px;border-radius:16px;box-shadow:0 10px 40px rgba(0,0,0,0.3);padding:24px;text-align:center;position:relative}
-.ad-close{position:absolute;top:12px;right:14px;font-size:20px;cursor:pointer;color:var(--sub)}
-.ad-title{font-size:20px;font-weight:700;margin-bottom:12px;color:var(--text)}
-.ad-content{font-size:15px;color:var(--sub);line-height:1.6;margin-bottom:20px}
-.ad-btn{display:inline-block;padding:12px 24px;background:var(--accent);color:#fff;border-radius:10px;text-decoration:none;font-weight:500}
+:root{
+    --bg:#f8fafc;
+    --card:#fff;
+    --text:#1e293b;
+    --sub:#64748b;
+    --border:#e2e8f0;
+    --main:#4c6fff;
+    --light:#eff6ff;
+    --radius:18px;
+    --card-radius:16px;
+    --shadow:0 8px 25px rgba(0,0,0,0.06);
+    --shadow-sm:0 2px 8px rgba(0,0,0,0.04);
+}
+[data-theme=dark]{
+    --bg:#0f172a;
+    --card:#1e293b;
+    --text:#f1f5f9;
+    --sub:#94a3b8;
+    --border:#334155;
+    --main:#5d87ff;
+    --light:#1e293b;
+    --shadow:0 8px 25px rgba(0,0,0,0.2);
+    --shadow-sm:0 2px 8px rgba(0,0,0,0.1);
+}
+
+body{background:var(--bg);color:var(--text);padding:0;min-height:100vh}
+.container{max-width:1100px;margin:0 auto;padding:30px 20px}
+
+.header{
+    text-align:center;
+    margin-bottom:40px;
+    position:relative;
+    padding:20px;
+}
+.logo{
+    font-size:46px;
+    font-weight:800;
+    color:var(--main);
+    margin-bottom:12px;
+    letter-spacing:0.5px;
+}
+.contact{
+    font-size:16px;
+    color:var(--sub);
+}
+.mode-btn{
+    position:absolute;
+    top:20px;
+    right:20px;
+    padding:10px 16px;
+    border-radius:999px;
+    border:none;
+    background:var(--card);
+    color:var(--text);
+    box-shadow:var(--shadow-sm);
+    cursor:pointer;
+    transition:0.2s;
+}
+.mode-btn:hover{transform:scale(1.05);}
+
+.search-box{
+    background:var(--card);
+    border-radius:var(--radius);
+    padding:22px 24px;
+    margin-bottom:35px;
+    box-shadow:var(--shadow);
+}
+.search-main{display:flex;gap:12px;}
+.search-input{
+    flex:1;
+    padding:16px 20px;
+    border-radius:12px;
+    border:1px solid var(--border);
+    background:var(--bg);
+    color:var(--text);
+    outline:none;
+    font-size:15px;
+    transition:0.2s;
+}
+.search-input:focus{border-color:var(--main);background:var(--light);}
+.search-btn{
+    padding:16px 26px;
+    border-radius:12px;
+    background:var(--main);
+    color:#fff;
+    border:none;
+    font-weight:500;
+    cursor:pointer;
+    transition:0.2s;
+    white-space:nowrap;
+}
+.search-btn:hover{
+    transform:translateY(-2px);
+    box-shadow:0 6px 15px rgba(76,111,255,0.25);
+}
+
+.cat{margin-bottom:40px;}
+.cat-title{
+    font-size:20px;
+    font-weight:600;
+    margin-bottom:18px;
+    padding-left:12px;
+    border-left:4px solid var(--main);
+    color:var(--text);
+}
+
+.link-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(170px,1fr));
+    gap:14px;
+}
+.link-item{
+    display:flex;
+    align-items:center;
+    gap:12px;
+    padding:18px 16px;
+    background:var(--card);
+    border-radius:var(--card-radius);
+    text-decoration:none;
+    color:var(--text);
+    box-shadow:var(--shadow-sm);
+    transition:all 0.25s ease;
+    border:1px solid transparent;
+}
+.link-item:hover{
+    transform:translateY(-4px);
+    box-shadow:var(--shadow);
+    border-color:var(--main);
+}
+.link-icon{
+    width:34px;
+    height:34px;
+    display:flex;align-items:center;justify-content:center;
+    background:var(--main);color:#fff;
+    border-radius:10px;font-weight:bold;font-size:16px;
+}
+.footer{text-align:center;margin-top:50px;padding:20px 0;color:var(--sub);}
+
+.ad-modal{position:fixed;inset:0;background:rgba(0,0,0,0.85);display:none;align-items:center;justify-content:center;z-index:9999}
+.ad-box{position:relative;width:90%;max-width:460px}
+.ad-close{position:absolute;top:-15px;right:-15px;width:40px;height:40px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;z-index:10;border:none}
+.ad-img{width:100%;border-radius:20px;display:none;cursor:pointer}
+.ad-img.active{display:block}
+.login-modal{position:fixed;inset:0;background:rgba(0,0,0,0.7);display:none;align-items:center;justify-content:center;z-index:9999}
+.login-box{background:var(--card);padding:40px;border-radius:20px;width:90%;max-width:400px;text-align:center}
+.login-box h2{margin-bottom:20px}
+.login-box input{width:100%;padding:14px;margin:8px 0;border-radius:12px;border:1px solid var(--border)}
+.login-box button{padding:14px 30px;margin-top:10px;border-radius:12px;background:var(--main);color:#fff;border:none;width:100%}
+.admin-modal{position:fixed;inset:0;background:var(--bg);z-index:9999;display:none}
+.admin-wrap{display:flex;height:100vh;width:100vw}
+.admin-sidebar{width:220px;background:#1e293b;color:#fff;padding:20px}
+.admin-sidebar h2{margin-bottom:30px;text-align:center}
+.menu-btn{width:100%;padding:14px;background:transparent;color:#fff;border:none;border-radius:8px;text-align:left;margin-bottom:6px;cursor:pointer}
+.menu-btn.active{background:#2563eb}
+.admin-main{flex:1;background:var(--bg);padding:30px;overflow-y:auto}
+.admin-title{font-size:24px;margin-bottom:20px}
+.admin-panel{display:none}
+.admin-panel.active{display:block}
+input,select{width:100%;padding:14px;margin:8px 0;border-radius:12px;border:1px solid var(--border);background:var(--card);color:var(--text)}
+button{padding:12px 16px;border-radius:10px;border:none;background:var(--main);color:#fff;cursor:pointer;margin-right:6px;margin-top:6px}
+.btn-red{background:#ef4444}
+.drag-item{background:var(--card);padding:14px;border-radius:12px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center}
+#adPreviewList{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}
+.img-preview{max-width:140px;border-radius:10px}
+.move-select{max-width:150px}
 </style>
 </head>
+
 <body>
 
-<!-- 弹窗广告（打开网站自动弹出） -->
 <div class="ad-modal" id="adModal">
     <div class="ad-box">
-        <div class="ad-close" id="adClose">×</div>
-        <div class="ad-title">变现项目</div>
-        <div class="ad-content">互联网变现项目、小白0基础快速上手、月入10000+。</div>
-        <a href="https://qm.qq.com/q/VJWvxcn4yc" target="_blank" class="ad-btn">查看详情</a>
+        <button class="ad-close" id="adClose">×</button>
+        <div id="adContainer"></div>
     </div>
 </div>
 
+<div class="login-modal" id="loginModal">
+    <div class="login-box">
+        <h2>🔐 管理员登录</h2>
+        <input id="adminUser" placeholder="请输入管理员账号">
+        <input type="password" id="adminPwd" placeholder="请输入管理员密码">
+        <button onclick="checkLogin()">登录后台</button>
+        <button class="btn-red" onclick="closeLogin()" style="margin-top:8px">取消</button>
+    </div>
+</div>
+
+<div class="admin-modal" id="adminModal">
+    <div class="admin-wrap">
+        <div class="admin-sidebar" id="sidebarMenu">
+            <h2>管理后台</h2>
+            <button class="menu-btn active" onclick="switchMenu(0)">基础设置</button>
+            <button class="menu-btn" onclick="switchMenu(1)">广告管理</button>
+            <button class="menu-btn" onclick="switchMenu(2)">分类管理</button>
+            <button class="menu-btn" onclick="switchMenu(3)">添加网站</button>
+            <button class="menu-btn" onclick="switchMenu(4)">全部网站</button>
+        </div>
+        <div class="admin-main">
+            <div id="panel0" class="admin-panel active">
+                <div class="admin-title">基础设置</div>
+                <input id="title" placeholder="网站标题">
+                <input id="logoText" placeholder="LOGO文字">
+                <input id="mainColor" placeholder="主题色（如#4c6fff）">
+                <select id="fontFamily">
+                    <option value="system-ui">默认字体</option>
+                    <option value="Arial">Arial</option>
+                    <option value="'Microsoft YaHei'">微软雅黑</option>
+                    <option value="'PingFang SC'">苹方</option>
+                </select>
+                <input id="contact" placeholder="联系方式">
+                <input id="copyright" placeholder="底部版权">
+
+                <div style="height:1px;background:var(--border);margin:16px 0"></div>
+                <div class="admin-title" style="font-size:18px">🔐 独立登录账号密码</div>
+                <input id="loginUser" placeholder="后台登录账号">
+                <input id="loginPwd" placeholder="后台登录密码">
+
+                <button onclick="saveAll()">保存设置</button>
+            </div>
+            <div id="panel1" class="admin-panel">
+                <div class="admin-title">广告管理</div>
+                <input type="file" id="adUpload" multiple accept="image/*">
+                <input id="adLink" placeholder="广告跳转链接">
+                <div id="adPreviewList"></div>
+                <button onclick="saveAll()">保存广告</button>
+            </div>
+            <div id="panel2" class="admin-panel">
+                <div class="admin-title">分类管理</div>
+                <input id="catName" placeholder="分类名称">
+                <button onclick="addCategory()">新增分类</button>
+                <div id="catSortList" style="margin-top:15px"></div>
+                <button onclick="saveAll()">保存排序</button>
+            </div>
+            <div id="panel3" class="admin-panel">
+                <div class="admin-title">添加网站</div>
+                <select id="catSelect"></select>
+                <input id="siteName" placeholder="网站名称">
+                <input id="siteUrl" placeholder="网址 https://">
+                <button onclick="autoGetIcon()">获取图标</button>
+                <input id="siteIcon" placeholder="图标文字/链接">
+                <input id="siteColor" placeholder="图标颜色">
+                <button onclick="addSite()">添加网站</button>
+                <div id="siteSortList" style="margin-top:15px"></div>
+                <button onclick="saveAll()">保存网站</button>
+            </div>
+            <div id="panel4" class="admin-panel">
+                <div class="admin-title">全部网站管理</div>
+                <div id="allSiteList" style="margin-top:15px"></div>
+                <button onclick="saveAll()">保存修改</button>
+            </div>
+            <div id="panel5" class="admin-panel">
+                <div class="admin-title">分站管理</div>
+                <input id="subName" placeholder="分站名称">
+                <input id="subKey" placeholder="分站标识(英文/数字)">
+                <button onclick="createSub()">创建分站</button>
+                <div id="subList" style="margin-top:20px"></div>
+            </div>
+            <button class="btn-red" onclick="closeAdmin()" style="width:100%;margin-top:30px;">退出后台</button>
+        </div>
+    </div>
+</div>
+
+<button style="position:fixed;bottom:20px;right:20px;width:56px;height:56px;border-radius:50%;background:var(--main);color:#fff;font-size:22px;cursor:pointer;z-index:99;" onclick="showLogin()">⚙️</button>
+
 <div class="container">
-<div class="header">
-<button class="toggle-btn" id="toggle">切换模式</button>
-<div class="logo">轻简导航</div>
-<div class="contact">站长微信：xxxxxx | 商务合作：xxxx@qq.com</div>
-</div>
-
-<div class="search-box">
-<div class="search-main">
-<input type="text" class="search-input" id="kw" placeholder="输入关键词搜索...">
-<button class="search-btn" id="searchBtn">搜索</button>
-</div>
-<div class="result-box" id="resultBox">
-<div class="result-title">搜索结果：</div>
-<div class="result-list" id="resultList"></div>
-</div>
-</div>
-
-<div class="cat">
-<div class="cat-title">常用网站</div>
-<div class="link-grid">
-<a class="link-item" href="https://www.baidu.com"><div class="link-icon" style="background:#4e9af1">百</div>百度</a>
-<a class="link-item" href="https://www.douyin.com"><div class="link-icon" style="background:#25f">抖</div>抖音</a>
-<a class="link-item" href="https://www.bilibili.com"><div class="link-icon" style="background:#fb7299">B</div>B站</a>
-<a class="link-item" href="https://www.zhihu.com"><div class="link-icon" style="background:#0f88eb">知</div>知乎</a>
-<a class="link-item" href="https://www.163.com"><div class="link-icon" style="background:#c10d0c">网</div>网易</a>
-<a class="link-item" href="https://www.qq.com"><div class="link-icon" style="background:#12b7f5">Q</div>QQ</a>
-</div>
-</div>
-
-<div class="cat">
-<div class="cat-title">AI（国外）文本工具</div>
-<div class="link-grid">
-<a class="link-item" href="http://chat.openai.com/"><div class="link-icon" style="background:#10a37f">GPT</div>ChatGPT</a>
-<a class="link-item" href="https://www.anthropic.com/product"><div class="link-icon" style="background:#6361f9">Cl</div>Claude</a>
-<a class="link-item" href="https://bard.google.com/"><div class="link-icon" style="background:#4285f4">Ba</div>Bard</a>
-<a class="link-item" href="https://copilot.microsoft.com/"><div class="link-icon" style="background:#0078d4">Co</div>Copilot</a>
-<a class="link-item" href="https://grok.x.ai/"><div class="link-icon" style="background:#0066ff">Gr</div>Grok</a>
-<a class="link-item" href="https://poe.com/login"><div class="link-icon" style="background:#651fff">Po</div>Poe</a>
-<a class="link-item" href="https://www.notion.so/product/ai"><div class="link-icon" style="background:#000">No</div>Notion AI</a>
-</div>
-</div>
-
-<div class="cat">
-<div class="cat-title">AI（国内）文本工具</div>
-<div class="link-grid">
-<a class="link-item" href="https://yiyan.baidu.com/"><div class="link-icon" style="background:#0066ff">文</div>文心一言</a>
-<a class="link-item" href="https://tongyi.aliyun.com/qianwen/"><div class="link-icon" style="background:#00a1d6">通</div>通义千问</a>
-<a class="link-item" href="https://chatglm.cn/"><div class="link-icon" style="background:#4285f4">智</div>智谱清言</a>
-<a class="link-item" href="https://kimi.moonshot.cn/"><div class="link-icon" style="background:#ff4500">Ki</div>Kimi Chat</a>
-<a class="link-item" href="https://www.doubao.com/"><div class="link-icon" style="background:#165DFF">豆</div>豆包</a>
-</div>
-</div>
-
-<div class="cat">
-<div class="cat-title">开发工具</div>
-<div class="link-grid">
-<a class="link-item" href="https://github.com"><div class="link-icon" style="background:#333">Git</div>GitHub</a>
-<a class="link-item" href="https://codepen.io"><div class="link-icon" style="background:#000">Co</div>CodePen</a>
-<a class="link-item" href="https://www.iconfont.cn"><div class="link-icon" style="background:#f42">图</div>阿里图标</a>
-<a class="link-item" href="https://tool.lu"><div class="link-icon" style="background:#566">工</div>在线工具</a>
-</div>
-</div>
-
-<div class="cat">
-<div class="cat-title">影视视频</div>
-<div class="link-grid">
-<a class="link-item" href="https://v.qq.com"><div class="link-icon" style="background:#39f">腾</div>腾讯视频</a>
-<a class="link-item" href="https://www.iqiyi.com"><div class="link-icon" style="background:#f45">爱</div>爱奇艺</a>
-<a class="link-item" href="https://www.youku.com"><div class="link-icon" style="background:#1c6">优</div>优酷</a>
-</div>
-</div>
-
-<div class="footer">
-<div class="copyright">© 2025 轻简导航 版权所有</div>
-<div>专注高效上网 | 简洁无广告</div>
-</div>
-
-</div>
-
-<div style="display:none">
-<script src="https://tf.zdzhu.com/t.js?id=1"></script>
+    <div class="header">
+        <button class="mode-btn" onclick="toggleMode()">🌙 切换模式</button>
+        <div class="logo" id="logo"></div>
+        <div class="contact" id="contactShow"></div>
+    </div>
+    <div class="search-box">
+        <div class="search-main">
+            <input class="search-input" id="kw" placeholder="搜索网站...">
+            <button class="search-btn" onclick="doSearch()">搜索</button>
+        </div>
+    </div>
+    <div id="categoryContainer"></div>
+    <div class="footer">
+        <div id="copyright"></div>
+    </div>
 </div>
 
 <script>
-// 主题切换
-const toggle=document.getElementById('toggle');
-const current=localStorage.getItem('theme')||'light';
-document.documentElement.setAttribute('data-theme',current);
-toggle.addEventListener('click',()=>{
-const now=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';
-document.documentElement.setAttribute('data-theme',now);
-localStorage.setItem('theme',now);
-toggle.textContent=now==='dark'?'明亮模式':'暗黑模式';
-});
-toggle.textContent=current==='dark'?'明亮模式':'暗黑模式';
+let params = new URLSearchParams(location.search);
+let siteFlag = params.get("site") || "main";
+let isMain = siteFlag === "main";
+let storageKey = "NAV_DATA_" + siteFlag;
 
-// 搜索功能
-const kw=document.getElementById('kw');
-const searchBtn=document.getElementById('searchBtn');
-const resultBox=document.getElementById('resultBox');
-const resultList=document.getElementById('resultList');
-const sites = [
-{name:"百度",url:"https://www.baidu.com"},{name:"抖音",url:"https://www.douyin.com"},{name:"B站",url:"https://www.bilibili.com"},{name:"知乎",url:"https://www.zhihu.com"},{name:"网易",url:"https://www.163.com"},{name:"QQ",url:"https://www.qq.com"},
-{name:"ChatGPT",url:"http://chat.openai.com/"},{name:"Claude",url:"https://www.anthropic.com/product"},{name:"Bard",url:"https://bard.google.com/"},{name:"Copilot",url:"https://copilot.microsoft.com/"},{name:"Grok",url:"https://grok.x.ai/"},{name:"Poe",url:"https://poe.com/login"},{name:"Notion AI",url:"https://www.notion.so/product/ai"},
-{name:"文心一言",url:"https://yiyan.baidu.com/"},{name:"通义千问",url:"https://tongyi.aliyun.com/qianwen/"},{name:"智谱清言",url:"https://chatglm.cn/"},{name:"Kimi Chat",url:"https://kimi.moonshot.cn/"},{name:"豆包",url:"https://www.doubao.com/"},
-{name:"GitHub",url:"https://github.com"},{name:"CodePen",url:"https://codepen.io"},{name:"阿里图标",url:"https://www.iconfont.cn"},{name:"在线工具",url:"https://tool.lu"},
-{name:"腾讯视频",url:"https://v.qq.com"},{name:"爱奇艺",url:"https://www.iqiyi.com"},{name:"优酷",url:"https://www.youku.com"}
-];
-function doSearch(){
-const key=kw.value.trim().toLowerCase();resultList.innerHTML='';if(!key){resultBox.style.display='none';return;}
-let matches=sites.filter(s=>s.name.toLowerCase().includes(key)||s.url.toLowerCase().includes(key));
-if(matches.length===0){resultList.innerHTML='<div style="padding:10px;color:var(--sub)">未找到相关网站</div>';}
-else{matches.forEach(item=>{let a=document.createElement('a');a.className='result-item';a.href=item.url;a.target='_blank';a.innerHTML=`<div class="result-name">${item.name}</div><div class="result-url">${item.url}</div>`;resultList.appendChild(a);});}
-resultBox.style.display='block';}
-searchBtn.addEventListener('click',doSearch);kw.addEventListener('keypress',e=>e.key==='Enter'&&doSearch());
+let data = JSON.parse(localStorage.getItem(storageKey)) || {
+  title: "导航系统",
+  logoText: "导航",
+  mainColor: "#4c6fff",
+  fontFamily: "system-ui",
+  contact: "站长微信",
+  copyright: "© 2025 版权所有",
+  loginUser: "admin",
+  loginPwd: "123456",
+  ads: [],
+  adLink: "https://www.baidu.com",
+  theme: "light",
+  categories: [{id:1,name:"常用网站"},{id:2,name:"AI工具"},{id:3,name:"素材网站"}],
+  sites: []
+};
 
-// 弹窗广告
-const adModal=document.getElementById('adModal');
-const adClose=document.getElementById('adClose');
-adClose.onclick=()=>{adModal.style.display='none';}
-window.onclick=(e)=>{if(e.target===adModal){adModal.style.display='none';}}
+if(data.theme === "dark") document.documentElement.setAttribute("data-theme", "dark");
+
+let subData = JSON.parse(localStorage.getItem("SUB_SITES")) || { list: [] };
+
+function applyColor() {
+  document.documentElement.style.setProperty("--main", data.mainColor || "#4c6fff");
+  document.body.style.fontFamily = data.fontFamily || "system-ui";
+}
+
+function render() {
+  applyColor();
+  document.getElementById("logo").innerText = data.logoText || data.title;
+  document.getElementById("contactShow").innerText = data.contact;
+  document.getElementById("copyright").innerText = data.copyright;
+  renderCategories();
+  initAdModal();
+}
+render();
+
+// ========== 权限控制：只有主站显示分站管理 ==========
+function initSidebar(){
+    let bar = document.getElementById("sidebarMenu");
+    if(isMain){
+        bar.innerHTML += `<button class="menu-btn" onclick="switchMenu(5)">分站管理</button>`;
+    }
+    bar.innerHTML += `<button class="btn-red" onclick="closeAdmin()" style="width:100%;margin-top:30px;">退出后台</button>`;
+}
+
+function initAdModal() {
+  if (!data.ads || data.ads.length === 0) return;
+  const modal = document.getElementById("adModal");
+  const container = document.getElementById("adContainer");
+  container.innerHTML = "";
+  data.ads.forEach((img, i) => {
+    let imgEl = document.createElement("img");
+    imgEl.src = img;
+    imgEl.className = "ad-img" + (i === 0 ? " active" : "");
+    imgEl.onclick = () => window.open(data.adLink || "https://www.baidu.com", "_blank");
+    container.appendChild(imgEl);
+  });
+  setTimeout(() => modal.style.display = "flex", 800);
+  let index = 0;
+  setInterval(() => {
+    let imgs = document.querySelectorAll(".ad-img");
+    if (imgs.length < 2) return;
+    imgs.forEach(x => x.classList.remove("active"));
+    imgs[(++index) % imgs.length].add("active");
+  }, 3000);
+}
+document.getElementById("adClose").onclick = () => document.getElementById("adModal").style.display = "none";
+
+function showLogin() { document.getElementById("loginModal").style.display = "flex"; }
+function closeLogin() { document.getElementById("loginModal").style.display = "none"; }
+function openAdmin() {
+    initSidebar();
+    document.getElementById("adminModal").style.display = "flex";
+}
+function closeAdmin() { document.getElementById("adminModal").style.display = "none"; }
+
+function checkLogin() {
+  let inputUser = document.getElementById("adminUser").value.trim();
+  let inputPwd = document.getElementById("adminPwd").value.trim();
+  if (inputUser === data.loginUser && inputPwd === data.loginPwd) {
+    closeLogin();
+    openAdmin();
+    loadAdminData();
+    switchMenu(0);
+  } else {
+    alert("账号或密码错误！");
+  }
+}
+
+function switchMenu(i) {
+  if(i === 5 && !isMain) return alert("无权限");
+  
+  document.querySelectorAll(".admin-panel").forEach((p, x) => p.classList.toggle("active", x === i));
+  document.querySelectorAll(".menu-btn").forEach((b, x) => b.classList.toggle("active", x === i));
+  if (i === 4) loadAllSiteList();
+  if (i === 5 && isMain) loadSubList();
+}
+
+function loadAdminData() {
+  document.getElementById("title").value = data.title || "";
+  document.getElementById("logoText").value = data.logoText || "";
+  document.getElementById("mainColor").value = data.mainColor || "#4c6fff";
+  document.getElementById("fontFamily").value = data.fontFamily || "system-ui";
+  document.getElementById("contact").value = data.contact || "";
+  document.getElementById("copyright").value = data.copyright || "";
+  document.getElementById("loginUser").value = data.loginUser || "";
+  document.getElementById("loginPwd").value = data.loginPwd || "";
+  document.getElementById("adLink").value = data.adLink || "";
+  refreshAdPreview();
+  refreshCatList();
+  refreshSiteList();
+  loadAllSiteList();
+}
+
+document.getElementById("adUpload").onchange = (e) => {
+  for (let file of e.target.files) {
+    let reader = new FileReader();
+    reader.onload = ev => { data.ads.push(ev.target.result); refreshAdPreview(); }
+    reader.readAsDataURL(file);
+  }
+};
+
+function refreshAdPreview() {
+  let html = "";
+  data.ads.forEach((img, i) => {
+    html += `<div style="position:relative"><img src="${img}" class="img-preview"><button onclick="data.ads.splice(${i},1);refreshAdPreview()" style="position:absolute;top:-6px;right:-6px;width:24px;height:24px;padding:0;background:#ef4444;border-radius:50%">×</button></div>`;
+  });
+  document.getElementById("adPreviewList").innerHTML = html;
+}
+
+function addCategory() {
+  let name = document.getElementById("catName").value.trim();
+  if (name) {
+    data.categories.push({ id: Date.now(), name });
+    document.getElementById("catName").value = "";
+    refreshCatList();
+  }
+}
+function editCat(id) {
+  let cat = data.categories.find(x => x.id == id);
+  let n = prompt("新名称", cat.name);
+  if (n) { cat.name = n; refreshCatList(); renderCategories(); }
+}
+function delCat(id) {
+  if (!confirm("确定删除？")) return;
+  data.categories = data.categories.filter(x => x.id != id);
+  data.sites = data.sites.filter(x => x.cid != id);
+  refreshCatList(); renderCategories(); loadAllSiteList();
+}
+function refreshCatList() {
+  let html = "";
+  data.categories.forEach(c => {
+    html += `<div class="drag-item"><span>${c.name}</span><div><button onclick="editCat(${c.id})">编辑</button><button class="btn-red" onclick="delCat(${c.id})">删除</button></div></div>`;
+  });
+  document.getElementById("catSortList").innerHTML = html;
+  let opt = ""; data.categories.forEach(c => opt += `<option value="${c.id}">${c.name}</option>`);
+  document.getElementById("catSelect").innerHTML = opt;
+}
+
+function autoGetIcon() {
+  let u = document.getElementById("siteUrl").value;
+  if (u) try { document.getElementById("siteIcon").value = `https://favicon.im/${new URL(u).hostname}`; } catch (e) {}
+}
+
+function addSite() {
+  let cid = document.getElementById("catSelect").value;
+  let name = document.getElementById("siteName").value.trim();
+  let url = document.getElementById("siteUrl").value.trim();
+  let icon = document.getElementById("siteIcon").value || "链";
+  let color = document.getElementById("siteColor").value || data.mainColor;
+  if (!cid || !name || !url) return alert("请填写完整");
+  data.sites.push({ cid: Number(cid), name, url, icon, color });
+  document.getElementById("siteName").value = "";
+  document.getElementById("siteUrl").value = "";
+  document.getElementById("siteIcon").value = "";
+  refreshSiteList(); loadAllSiteList(); renderCategories();
+}
+
+function delSite(i) {
+  data.sites.splice(i, 1);
+  refreshSiteList(); loadAllSiteList(); renderCategories();
+}
+
+function refreshSiteList() {
+  let html = "";
+  data.sites.forEach((s, i) => {
+    let c = data.categories.find(x => x.id == s.cid)?.name || "未分类";
+    html += `<div class="drag-item"><span>${c} → ${s.name}</span><button class="btn-red" onclick="delSite(${i})">删除</button></div>`;
+  });
+  document.getElementById("siteSortList").innerHTML = html;
+}
+
+function loadAllSiteList() {
+  let html = "";
+  data.sites.forEach((s, i) => {
+    let opt = ""; data.categories.forEach(c => opt += `<option value="${c.id}" ${c.id==s.cid?"selected":""}>${c.name}</option>`);
+    html += `<div class="drag-item"><span>${s.name}</span><div><select class="move-select" onchange="data.sites[${i}].cid=Number(this.value);renderCategories();">${opt}</select><button class="btn-red" onclick="delSite(${i})">删除</button></div></div>`;
+  });
+  document.getElementById("allSiteList").innerHTML = html;
+}
+
+function saveAll() {
+  data.title = document.getElementById("title").value;
+  data.logoText = document.getElementById("logoText").value;
+  data.mainColor = document.getElementById("mainColor").value;
+  data.fontFamily = document.getElementById("fontFamily").value;
+  data.contact = document.getElementById("contact").value;
+  data.copyright = document.getElementById("copyright").value;
+  data.loginUser = document.getElementById("loginUser").value;
+  data.loginPwd = document.getElementById("loginPwd").value;
+  data.adLink = document.getElementById("adLink").value;
+  localStorage.setItem(storageKey, JSON.stringify(data));
+  render();
+  alert("保存成功！");
+  closeAdmin();
+}
+
+function renderCategories() {
+  let html = "";
+  data.categories.forEach(cat => {
+    html += `<div class="cat"><div class="cat-title">${cat.name}</div><div class="link-grid">`;
+    data.sites.filter(s => s.cid == cat.id).forEach(s => {
+      html += `<a class="link-item" href="${s.url}" target="_blank"><div class='link-icon' style='background:${s.color}'>${s.icon}</div>${s.name}</a>`;
+    });
+    html += `</div></div>`;
+  });
+  document.getElementById("categoryContainer").innerHTML = html;
+}
+
+function doSearch() {
+  let k = document.getElementById("kw").value.toLowerCase();
+  if (!k) { renderCategories(); return; }
+  let r = data.sites.filter(s => s.name.toLowerCase().includes(k));
+  let html = "<div class='cat'><div class='cat-title'>搜索结果</div><div class='link-grid'>";
+  r.forEach(s => { html += `<a class='link-item' href='${s.url}' target='_blank'><div class='link-icon' style='background:${s.color}'>${s.icon}</div>${s.name}</a>`; });
+  document.getElementById("categoryContainer").innerHTML = html + "</div></div>";
+}
+
+function toggleMode() {
+  let isDark = document.documentElement.toggleAttribute("data-theme");
+  data.theme = isDark ? "dark" : "light";
+  localStorage.setItem(storageKey, JSON.stringify(data));
+}
+
+// ========== 分站功能（仅主站可用） ==========
+function createSub() {
+  if(!isMain) return alert("无权限");
+  let name = document.getElementById("subName").value.trim();
+  let key = document.getElementById("subKey").value.trim();
+  if (!name || !key) return alert("请填写完整");
+  if (subData.list.some(s => s.key === key)) return alert("标识已存在");
+  subData.list.push({ name, key });
+  localStorage.setItem("SUB_SITES", JSON.stringify(subData));
+  document.getElementById("subName").value = "";
+  document.getElementById("subKey").value = "";
+  loadSubList();
+  alert("创建成功");
+}
+
+function loadSubList() {
+  if(!isMain) return;
+  let html = "";
+  subData.list.forEach((s, i) => {
+    let url = location.origin + location.pathname + "?site=" + s.key;
+    html += `
+    <div class="drag-item">
+      <span>${s.name} (${s.key})</span>
+      <div>
+        <button onclick="window.open('${url}')">打开</button>
+        <button class="btn-red" onclick="delSub(${i})">删除</button>
+      </div>
+    </div>`;
+  });
+  document.getElementById("subList").innerHTML = html;
+}
+
+function delSub(i) {
+  if(!isMain) return;
+  if (!confirm("删除将清空该分站所有数据")) return;
+  let key = subData.list[i].key;
+  localStorage.removeItem("NAV_DATA_" + key);
+  subData.list.splice(i, 1);
+  localStorage.setItem("SUB_SITES", JSON.stringify(subData));
+  loadSubList();
+}
 </script>
 </body>
 </html>
