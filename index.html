@@ -184,7 +184,18 @@ body{background:var(--bg);color:var(--text);padding:0;min-height:100vh}
 input,select{width:100%;padding:14px;margin:8px 0;border-radius:12px;border:1px solid var(--border);background:var(--card);color:var(--text)}
 button{padding:12px 16px;border-radius:10px;border:none;background:var(--main);color:#fff;cursor:pointer;margin-right:6px;margin-top:6px}
 .btn-red{background:#ef4444}
-.drag-item{background:var(--card);padding:14px;border-radius:12px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center}
+.drag-item{
+    background:var(--card);
+    padding:14px;
+    border-radius:12px;
+    margin-bottom:8px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    cursor:move;
+    transition:background 0.2s;
+}
+.drag-item:hover{background:var(--light);}
 #adPreviewList{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}
 .img-preview{max-width:140px;border-radius:10px}
 .move-select{max-width:150px}
@@ -237,7 +248,7 @@ button{padding:12px 16px;border-radius:10px;border:none;background:var(--main);c
                 <button onclick="saveAll()">保存广告</button>
             </div>
             <div id="panel2" class="admin-panel">
-                <div class="admin-title">分类管理</div>
+                <div class="admin-title">分类管理（支持拖拽排序）</div>
                 <input id="catName" placeholder="分类名称">
                 <button onclick="addCategory()">新增分类</button>
                 <div id="catSortList" style="margin-top:15px"></div>
@@ -296,6 +307,11 @@ let data = JSON.parse(localStorage.getItem("NAV_DATA")) || {
     sites:[]
 };
 
+// 初始化主题
+if (localStorage.getItem("theme") === "dark") {
+    document.documentElement.setAttribute("data-theme", "dark");
+}
+
 function render(){
     document.getElementById("logo").innerText = data.title;
     document.getElementById("contactShow").innerText = data.contact;
@@ -304,6 +320,12 @@ function render(){
     initAdModal();
 }
 render();
+
+// ✅ 修复：切换模式 + 自动保存
+function toggleMode(){
+    document.documentElement.toggleAttribute("data-theme");
+    localStorage.setItem("theme", document.documentElement.hasAttribute("data-theme") ? "dark" : "light");
+}
 
 function initAdModal(){
     if(!data.ads || data.ads.length === 0) return;
@@ -378,6 +400,9 @@ function refreshAdPreview(){
     document.getElementById("adPreviewList").innerHTML = html;
 }
 
+// ==============================================
+// ✅ 新增：分类拖拽排序（纯原生，无任何依赖）
+// ==============================================
 function addCategory(){
     let name = document.getElementById("catName").value.trim();
     if(name){ data.categories.push({id:Date.now(), name:name}); document.getElementById("catName").value = ""; refreshCatList(); }
@@ -394,16 +419,57 @@ function delCat(id){
         refreshCatList(); loadAllSiteList(); renderCategories();
     }
 }
+
 function refreshCatList(){
-    let html = "";
-    data.categories.forEach(cat => {
-        html += `<div class="drag-item"><span>${cat.name}</span><div><button onclick="editCat(${cat.id})">编辑</button><button class="btn-red" onclick="delCat(${cat.id})">删除</button></div></div>`;
+    let container = document.getElementById("catSortList");
+    container.innerHTML = "";
+    
+    data.categories.forEach((cat, idx) => {
+        let div = document.createElement("div");
+        div.className = "drag-item";
+        div.draggable = true;
+        div.dataset.index = idx;
+        div.innerHTML = `
+            <span>${cat.name}</span>
+            <div>
+                <button onclick="editCat(${cat.id})">编辑</button>
+                <button class="btn-red" onclick="delCat(${cat.id})">删除</button>
+            </div>
+        `;
+        container.appendChild(div);
     });
-    document.getElementById("catSortList").innerHTML = html;
-    let opt = ""; data.categories.forEach(cat => opt += `<option value="${cat.id}">${cat.name}</option>`);
-    document.getElementById("catSelect").innerHTML = opt;
+
+    initDragSort();
 }
 
+// 拖拽排序核心
+function initDragSort(){
+    const items = document.querySelectorAll("#catSortList .drag-item");
+    let draggedIndex = -1;
+
+    items.forEach(item => {
+        item.addEventListener("dragstart", () => {
+            draggedIndex = parseInt(item.dataset.index);
+            setTimeout(() => item.style.opacity = "0.5", 0);
+        });
+        item.addEventListener("dragend", () => {
+            item.style.opacity = "1";
+            draggedIndex = -1;
+        });
+        item.addEventListener("dragover", (e) => e.preventDefault());
+        item.addEventListener("drop", () => {
+            const targetIndex = parseInt(item.dataset.index);
+            const dragged = data.categories.splice(draggedIndex, 1)[0];
+            data.categories.splice(targetIndex, 0, dragged);
+            refreshCatList();
+            renderCategories();
+        });
+    });
+}
+
+// ==============================================
+// 原有功能保持不变
+// ==============================================
 function autoGetIcon(){
     let url = document.getElementById("siteUrl").value;
     if(url) try{ document.getElementById("siteIcon").value = `https://favicon.im/${new URL(url).hostname}`; }catch(e){}
@@ -488,7 +554,6 @@ function doSearch(){
     list.forEach(s => { html += `<a class='link-item' href='${s.url}' target='_blank'><div class='link-icon' style='background:${s.color}'>${s.icon}</div>${s.name}</a>`; });
     document.getElementById("categoryContainer").innerHTML = html + "</div></div>";
 }
-function toggleMode(){ document.documentElement.toggleAttribute("data-theme"); }
 </script>
 </body>
 </html>
