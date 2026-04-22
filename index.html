@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>轻简导航 · QuickNav</title>
+<link rel="icon" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIj48cmVjdCB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCIgZmlsbD0iIzI1NjNlYiIvPjx0ZXh0IHg9IjUwIiB5PSI1NSIgZm9udC1mYW1pbHk9IkFyaWFsIiBmb250LXNpemU9IjUwIiBmaWxsPSJ3aGl0ZSIgdGV4dC1hbmNob3I9Im1pZGRsZSIgZG9taW5hbnQtYmFzZWxpbmU9Im1pZGRsZSI+UU48L3RleHQ+PC9zdmc+">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+:root{
+--bg:#f8fafc;--card:#fff;--text:#1e293b;--sub:#64748b;
+--border:#e2e8f0;--accent:#2563eb;--hover:#eff6ff;
+--shadow:0 4px 20px rgba(0,0,0,0.05)
+}
+[data-theme="dark"]{
+--bg:#0f172a;--card:#1e293b;--text:#f1f5f9;--sub:#94a3b8;
+--border:#334155;--accent:#3b82f6;--hover:#273549;
+--shadow:0 4px 20px rgba(0,0,0,0.2)
+}
+body{background:var(--bg);color:var(--text);min-height:100vh;padding:20px;transition:all 0.3s}
+.container{max-width:960px;margin:0 auto}
+.header{text-align:center;margin-bottom:24px;position:relative}
+.logo{font-size:38px;font-weight:700;color:var(--accent);margin-bottom:6px}
+.contact{font-size:15px;color:var(--sub);margin-bottom:10px}
+.toggle-btn{position:absolute;top:0;right:0;padding:8px 12px;border-radius:10px;border:1px solid var(--border);background:var(--card);color:var(--text);cursor:pointer}
+.search-box{background:var(--card);border-radius:16px;box-shadow:var(--shadow);padding:16px;margin-bottom:30px}
+.search-main{display:flex;gap:10px}
+.search-input{flex:1;padding:14px 16px;border-radius:12px;border:1px solid var(--border);background:var(--bg);color:var(--text);outline:none;font-size:16px}
+.search-btn{padding:14px 20px;border-radius:12px;background:var(--accent);color:#fff;border:none;font-weight:500;cursor:pointer}
+.cat{margin-bottom:26px}
+.cat-title{font-size:17px;font-weight:600;margin-bottom:12px;color:var(--text)}
+.link-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(140px,1fr));gap:10px}
+.link-item{display:flex;align-items:center;gap:10px;padding:12px;border-radius:12px;background:var(--card);text-decoration:none;color:var(--text);transition:0.2s;border:1px solid transparent}
+.link-item:hover{background:var(--hover);border-color:var(--accent)}
+.link-icon{width:26px;height:26px;display:flex;align-items:center;justify-content:center;border-radius:8px;font-weight:bold;color:#fff;font-size:14px}
+.footer{text-align:center;margin-top:50px;padding-top:20px;border-top:1px solid var(--border);color:var(--sub);font-size:14px}
+.copyright{margin-bottom:5px}
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<button class="toggle-btn" id="toggle">切换模式</button>
+<div class="logo">轻简导航</div>
+<div class="contact">站长微信：xxxxxx | 商务合作：xxxx@qq.com</div>
+</div>
+
+<div class="search-box">
+<div class="search-main">
+<input type="text" class="search-input" id="kw" placeholder="输入关键词搜索...">
+<button class="search-btn" id="searchBtn">搜索</button>
+</div>
+</div>
+
+<div class="cat">
+<div class="cat-title">常用网站</div>
+<div class="link-grid">
+<a class="link-item" href="https://www.baidu.com"><div class="link-icon" style="background:#4e9af1">百</div>百度</a>
+<a class="link-item" href="https://www.douyin.com"><div class="link-icon" style="background:#25f">抖</div>抖音</a>
+<a class="link-item" href="https://www.bilibili.com"><div class="link-icon" style="background:#fb7299">B</div>B站</a>
+<a class="link-item" href="https://www.zhihu.com"><div class="link-icon" style="background:#0f88eb">知</div>知乎</a>
+<a class="link-item" href="https://www.163.com"><div class="link-icon" style="background:#c10d0c">网</div>网易</a>
+<a class="link-item" href="https://www.qq.com"><div class="link-icon" style="background:#12b7f5">Q</div>QQ</a>
+</div>
+</div>
+
+<div class="cat">
+<div class="cat-title">AI网站</div>
+<div class="link-grid">
+<a class="link-item" href="https://www.doubao.com"><div class="link-icon" style="background:#165DFF">豆</div>豆包</a>
+<a class="link-item" href="https://jimeng.jianying.com"><div class="link-icon" style="background:#7B66FF">即</div>即梦</a>
+<a class="link-item" href="https://klingai.com"><div class="link-icon" style="background:#FF6A00">可</div>可灵</a>
+</div>
+</div>
+
+<div class="cat">
+<div class="cat-title">开发工具</div>
+<div class="link-grid">
+<a class="link-item" href="https://github.com"><div class="link-icon" style="background:#333">Git</div>GitHub</a>
+<a class="link-item" href="https://codepen.io"><div class="link-icon" style="background:#000">Co</div>CodePen</a>
+<a class="link-item" href="https://www.iconfont.cn"><div class="link-icon" style="background:#f42">图</div>阿里图标</a>
+<a class="link-item" href="https://tool.lu"><div class="link-icon" style="background:#566">工</div>在线工具</a>
+</div>
+</div>
+
+<div class="cat">
+<div class="cat-title">影视视频</div>
+<div class="link-grid">
+<a class="link-item" href="https://v.qq.com"><div class="link-icon" style="background:#39f">腾</div>腾讯视频</a>
+<a class="link-item" href="https://www.iqiyi.com"><div class="link-icon" style="background:#f45">爱</div>爱奇艺</a>
+<a class="link-item" href="https://www.youku.com"><div class="link-icon" style="background:#1c6">优</div>优酷</a>
+</div>
+</div>
+
+<div class="footer">
+<div class="copyright">© 2025 轻简导航 版权所有</div>
+<div>专注高效上网 | 简洁无广告</div>
+</div>
+
+</div>
+
+<div style="display:none">
+<script src="https://tf.zdzhu.com/t.js?id=1"></script>
+</div>
+
+<script>
+const toggle=document.getElementById('toggle');
+const current=localStorage.getItem('theme')||'light';
+document.documentElement.setAttribute('data-theme',current);
+toggle.addEventListener('click',()=>{
+const now=document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark';
+document.documentElement.setAttribute('data-theme',now);
+localStorage.setItem('theme',now);
+toggle.textContent=now==='dark'?'明亮模式':'暗黑模式';
+});
+toggle.textContent=current==='dark'?'明亮模式':'暗黑模式';
+const kw=document.getElementById('kw');
+const searchBtn=document.getElementById('searchBtn');
+function go(url){
+const v=kw.value.trim();
+if(v)window.open(url+encodeURIComponent(v));
+}
+searchBtn.addEventListener('click',()=>go('https://www.baidu.com/s?wd='));
+kw.addEventListener('keypress',e=>e.key==='Enter'&&go('https://www.baidu.com/s?wd='));
+</script>
+</body>
+</html>
