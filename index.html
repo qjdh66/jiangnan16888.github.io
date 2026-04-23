@@ -227,25 +227,69 @@ button{padding:12px 16px;border-radius:10px;border:none;background:var(--main);c
 
 <script>
 // ==============================================
-// ✅ 全局统一数据：电脑 / 手机 完全同步
+// ✅ 强制清空旧缓存 + 加载你要求的所有内容
 // ==============================================
+localStorage.removeItem("NAV_DATA"); // 强制清空旧数据
+
 let defaultData = {
     title:"全能导航系统",
     contact:"站长微信：jiangnan",
     copyright:"© 2025 版权所有",
     ads:[],
     adLink:"https://www.baidu.com",
-    categories:[{id:1,name:"常用网站"},{id:2,name:"AI工具"},{id:3,name:"素材网站"}],
-    sites:[]
+    categories:[
+        {id:1,name:"免费影视资源"},
+        {id:2,name:"AI配音工具"},
+        {id:3,name:"AI文本工具（国内）"},
+        {id:4,name:"AI文本工具（国外：需要科学上网）"},
+        {id:5,name:"AI绘画工具"},
+        {id:6,name:"AI视频工具"}
+    ],
+    sites:[
+        // 免费影视
+        {cid:1,name:"喵眼看剧",url:"http://dyss66.top/",icon:"影",color:"#4c6fff"},
+        {cid:1,name:"电影先生",url:"https://dyxs688.top/",icon:"影",color:"#4c6fff"},
+        
+        // AI配音
+        {cid:2,name:"配音神器手机版",url:"https://api.peiyinshenqi.club/u/eshzC",icon:"音",color:"#22c55e"},
+        {cid:2,name:"配音神器电脑版",url:"https://peiyinshenqi.com?rr=qjmprk5oPe",icon:"音",color:"#22c55e"},
+        {cid:2,name:"逗哥配音",url:"https://www.douge.com/index?from=BFfiAj",icon:"音",color:"#22c55e"},
+        
+        // AI文本 国内
+        {cid:3,name:"文心一言",url:"https://yiyan.baidu.com/",icon:"文",color:"#0ea5e9"},
+        {cid:3,name:"通义千问",url:"https://www.qianwen.com/",icon:"文",color:"#0ea5e9"},
+        {cid:3,name:"智谱清言",url:"https://chatglm.cn/main/alltoolsdetail?lang=zh",icon:"文",color:"#0ea5e9"},
+        {cid:3,name:"Kimi",url:"https://www.kimi.com/",icon:"文",color:"#0ea5e9"},
+        {cid:3,name:"豆包",url:"https://www.doubao.com/chat/",icon:"文",color:"#0ea5e9"},
+        {cid:3,name:"Deepseek",url:"https://www.deepseek.com/",icon:"文",color:"#0ea5e9"},
+        
+        // AI文本 国外
+        {cid:4,name:"ChatGPT",url:"http://chat.openai.com/",icon:"文",color:"#8b5cf6"},
+        {cid:4,name:"Claude",url:"https://www.anthropic.com/product",icon:"文",color:"#8b5cf6"},
+        {cid:4,name:"Bard",url:"https://bard.google.com/",icon:"文",color:"#8b5cf6"},
+        {cid:4,name:"Copilot",url:"https://copilot.microsoft.com/",icon:"文",color:"#8b5cf6"},
+        {cid:4,name:"Grok",url:"https://grok.x.ai/",icon:"文",color:"#8b5cf6"},
+        {cid:4,name:"Poe",url:"https://poe.com/login",icon:"文",color:"#8b5cf6"},
+        {cid:4,name:"Notion AI",url:"https://www.notion.so/product/ai",icon:"文",color:"#8b5cf6"},
+        
+        // AI绘画
+        {cid:5,name:"Midjourney",url:"https://www.midjourney.com/",icon:"画",color:"#f97316"},
+        {cid:5,name:"Stable Diffusion",url:"https://stablediffusionweb.com/",icon:"画",color:"#f97316"},
+        {cid:5,name:"Canva",url:"https://www.canva.cn/",icon:"画",color:"#f97316"},
+        {cid:5,name:"Clipdrop",url:"https://clipdrop.co/",icon:"画",color:"#f97316"},
+        {cid:5,name:"标小志",url:"https://www.logosc.cn/",icon:"画",color:"#f97316"},
+        {cid:5,name:"稿定智能设计",url:"https://www.gaoding.com/ai/design",icon:"画",color:"#f97316"},
+        
+        // AI视频
+        {cid:6,name:"Runway",url:"https://app.runwayml.com/login",icon:"视",color:"#ec4899"},
+        {cid:6,name:"Pika",url:"https://pika.art/",icon:"视",color:"#ec4899"},
+        {cid:6,name:"HeyGen",url:"https://www.heygen.com/",icon:"视",color:"#ec4899"},
+        {cid:6,name:"即梦",url:"https://jimeng.jianying.com/ai",icon:"视",color:"#ec4899"},
+        {cid:6,name:"可灵",url:"https://klingai.com/",icon:"视",color:"#ec4899"}
+    ]
 };
 
-let data;
-try {
-    data = JSON.parse(localStorage.getItem("NAV_DATA"));
-    if (!data) data = defaultData;
-} catch(e) {
-    data = defaultData;
-}
+let data = defaultData;
 
 if(localStorage.getItem("theme") === "dark"){
     document.documentElement.setAttribute("data-theme", "dark");
@@ -487,7 +531,7 @@ function toggleMode(){
         html.removeAttribute("data-theme");
         localStorage.setItem("theme", "light");
     }else{
-        html.setAttribute("data-theme","dark");
+        document.documentElement.setAttribute("data-theme","dark");
         localStorage.setItem("theme","dark");
     }
 }
