@@ -36,6 +36,29 @@
 body{background:var(--bg);color:var(--text);padding:0;min-height:100vh}
 .container{max-width:1100px;margin:0 auto;padding:30px 20px}
 
+/* ✅ 左上角返回按钮 */
+.back-btn {
+    position: fixed;
+    top: 20px;
+    left: 20px;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--main);
+    color: #fff;
+    font-size: 18px;
+    border: none;
+    display: none; /* 默认隐藏 */
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: var(--shadow-sm);
+    z-index: 999;
+}
+.back-btn.show{
+    display:flex;
+}
+
 /* ✨ 头部优化 */
 .header{
     text-align:center;
@@ -133,6 +156,9 @@ button{padding:12px 16px;border-radius:10px;border:none;background:var(--main);c
 </head>
 
 <body>
+
+<!-- ✅ 左上角返回按钮 -->
+<button class="back-btn" id="backBtn" onclick="goBack()">←</button>
 
 <div class="ad-modal" id="adModal">
     <div class="ad-box">
@@ -284,15 +310,23 @@ let defaultData = {
         {cid:6,name:"Runway",url:"https://app.runwayml.com/login",icon:"视",color:"#ec4899"},
         {cid:6,name:"Pika",url:"https://pika.art/",icon:"视",color:"#ec4899"},
         {cid:6,name:"HeyGen",url:"https://www.heygen.com/",icon:"视",color:"#ec4899"},
-        {cid:6,name:"即梦",url:"https://jimeng.jianying.com/ai",icon:"视",color:"#ec4899"},
+        {cid:6,name:"即梦",url:"https://jimeng.jianying.com/",icon:"视",color:"#ec4899"},
         {cid:6,name:"可灵",url:"https://klingai.com/",icon:"视",color:"#ec4899"}
     ]
 };
 
 let data = defaultData;
+const backBtn = document.getElementById("backBtn");
 
 if(localStorage.getItem("theme") === "dark"){
     document.documentElement.setAttribute("data-theme", "dark");
+}
+
+// ✅ 返回主页功能
+function goBack(){
+    document.getElementById("kw").value = "";
+    renderCategories();
+    backBtn.classList.remove("show"); // 隐藏返回按钮
 }
 
 function render(){
@@ -518,11 +552,14 @@ function renderCategories(){
 
 function doSearch(){
     let key = document.getElementById("kw").value.toLowerCase();
-    if(!key){ renderCategories(); return; }
+    if(!key){ renderCategories(); backBtn.classList.remove("show"); return; }
     let list = data.sites.filter(s => s.name.toLowerCase().includes(key));
     let html = "<div class='cat'><div class='cat-title'>搜索结果</div><div class='link-grid'>";
     list.forEach(s => { html += `<a class='link-item' href='${s.url}' target='_blank'><div class='link-icon' style='background:${s.color}'>${s.icon}</div>${s.name}</a>`; });
     document.getElementById("categoryContainer").innerHTML = html + "</div></div>";
+    
+    // ✅ 搜索后显示左上角返回按钮
+    backBtn.classList.add("show");
 }
 
 function toggleMode(){
