@@ -5,612 +5,489 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>全能导航系统</title>
 <style>
-*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui,-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif}
+*{margin:0;padding:0;box-sizing:border-box;font-family:system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif}
 
-/* ✨ 全局高级样式变量 */
-:root{
-    --bg:#f8fafc;
-    --card:#fff;
-    --text:#1e293b;
-    --sub:#64748b;
-    --border:#e2e8f0;
-    --main:#4c6fff;
-    --light:#eff6ff;
-    --radius:18px;
-    --card-radius:16px;
-    --shadow:0 8px 25px rgba(0,0,0,0.06);
-    --shadow-sm:0 2px 8px rgba(0,0,0,0.04);
+html {
+  --bg:#f8fafc;
+  --card:#fff;
+  --text:#1e2e33;
+  --sub:#64748b;
+  --border:#e2e8f0;
+  --main:#4c6fff;
 }
-[data-theme=dark]{
-    --bg:#0f172a;
-    --card:#1e293b;
-    --text:#f1f5f9;
-    --sub:#94a3b8;
-    --border:#334155;
-    --main:#5d87ff;
-    --light:#1e293b;
-    --shadow:0 8px 25px rgba(0,0,0,0.2);
-    --shadow-sm:0 2px 8px rgba(0,0,0,0.1);
+html.dark {
+  --bg:#0f172a;
+  --card:#1e293b;
+  --text:#f1f5f9;
+  --sub:#cbd5e1;
+  --border:#334155;
+  --main:#5d8ff9;
 }
 
-body{background:var(--bg);color:var(--text);padding:0;min-height:100vh}
-.container{max-width:1100px;margin:0 auto;padding:30px 20px}
-
-/* ✅ 左上角返回按钮 */
-.back-btn {
-    position: fixed;
-    top: 20px;
-    left: 20px;
-    width: 44px;
-    height: 44px;
-    border-radius: 50%;
-    background: var(--main);
-    color: #fff;
-    font-size: 18px;
-    border: none;
-    display: none; /* 默认隐藏 */
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    box-shadow: var(--shadow-sm);
-    z-index: 999;
+body{
+  background:var(--bg) !important;
+  color:var(--text) !important;
+  transition: all 0.25s ease;
 }
-.back-btn.show{
-    display:flex;
+.wrap{max-width:1100px;margin:0 auto;}
+
+.fixed-header{
+  position: fixed;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width:1100px;
+  background:var(--bg) !important;
+  z-index: 999;
+  padding-bottom: 10px;
+  transition: all 0.25s ease;
 }
 
-/* ✨ 头部优化 */
-.header{
-    text-align:center;
-    margin-bottom:40px;
-    position:relative;
-    padding:20px;
-}
-.logo{
-    font-size:46px;
-    font-weight:800;
-    color:var(--main);
-    margin-bottom:12px;
-    letter-spacing:0.5px;
-}
-.contact{
-    font-size:16px;
-    color:var(--sub);
-}
-.mode-btn{
-    position:absolute;top:20px;right:20px;
-    padding:10px 16px;border-radius:999px;border:none;
-    background:var(--card);color:var(--text);box-shadow:var(--shadow-sm);
-    cursor:pointer;transition:0.2s;
-}
-.mode-btn:hover{transform:scale(1.05);}
+.header{text-align:center;padding:20px 0 10px;position: relative;}
+.logo{font-size:32px;font-weight:800;color:var(--main);margin-bottom:8px}
+.contact{font-size:14px;color:var(--sub)}
+.mode-btn{position:absolute;top:20px;right:20px;padding:8px 12px;border-radius:999px;border:none;background:var(--card);color:var(--text);cursor:pointer}
 
-/* ✨ 搜索框优化 */
 .search-box{
-    background:var(--card);border-radius:var(--radius);
-    padding:22px 24px;margin-bottom:35px;box-shadow:var(--shadow);
+  background:var(--card);
+  border-radius:16px;
+  padding:18px;
+  margin:10px 0 0;
 }
-.search-main{display:flex;gap:12px;}
-.search-input{
-    flex:1;padding:16px 20px;border-radius:12px;border:1px solid var(--border);
-    background:var(--bg);color:var(--text);outline:none;font-size:15px;transition:0.2s;
-}
-.search-input:focus{border-color:var(--main);background:var(--light);}
-.search-btn{
-    padding:16px 26px;border-radius:12px;background:var(--main);color:#fff;
-    border:none;font-weight:500;cursor:pointer;transition:0.2s;white-space:nowrap;
-}
-.search-btn:hover{transform:translateY(-2px);box-shadow:0 6px 15px rgba(76,111,255,0.25);}
+.search-main{display:flex;gap:12px}
+.search-input{flex:1;padding:14px;border-radius:12px;border:1px solid var(--border);background:var(--card);color:var(--text);outline:none}
+.search-btn{padding:14px 22px;border-radius:12px;background:var(--main);color:#fff;border:none;cursor:pointer}
 
-/* ✨ 分类标题 + 左侧蓝条 */
-.cat{margin-bottom:40px;}
-.cat-title{
-    font-size:20px;font-weight:600;margin-bottom:18px;
-    padding-left:12px;border-left:4px solid var(--main);color:var(--text);
+.container{
+  max-width:1100px;
+  margin:0 auto;
+  padding: 240px 0 80px;
 }
 
-/* ✨ 卡片：大圆角 + 阴影 + 悬浮动效 */
-.link-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:14px;}
-.link-item{
-    display:flex;align-items:center;gap:12px;padding:18px 16px;
-    background:var(--card);border-radius:var(--card-radius);text-decoration:none;
-    color:var(--text);box-shadow:var(--shadow-sm);transition:all 0.25s ease;
-    border:1px solid transparent;
-}
-.link-item:hover{transform:translateY(-4px);box-shadow:var(--shadow);border-color:var(--main);}
-.link-icon{
-    width:34px;height:34px;display:flex;align-items:center;justify-content:center;
-    background:var(--main);color:#fff;border-radius:10px;font-weight:bold;font-size:16px;
-}
-.footer{text-align:center;margin-top:50px;padding:20px 0;color:var(--sub);}
+.cat{margin-bottom:24px}
+.cat-title{font-size:18px;font-weight:600;margin-bottom:12px;padding-left:10px;border-left:4px solid var(--main)}
 
-/* ⬇️⬇️⬇️ 以下完全不改动，保持你原有后台、弹窗样式 ⬇️⬇️⬇️ */
-.ad-modal{position:fixed;inset:0;background:rgba(0,0,0,0.85);display:none;align-items:center;justify-content:center;z-index:9999}
-.ad-box{position:relative;width:90%;max-width:460px}
-.ad-close{position:absolute;top:-15px;right:-15px;width:40px;height:40px;background:#fff;border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:18px;z-index:10;border:none}
-.ad-img{width:100%;border-radius:20px;display:none;cursor:pointer}
-.ad-img.active{display:block}
-.login-modal{position:fixed;inset:0;background:rgba(0,0,0,0.7);display:none;align-items:center;justify-content:center;z-index:9999}
-.login-box{background:var(--card);padding:40px;border-radius:20px;width:90%;max-width:400px;text-align:center}
-.login-box h2{margin-bottom:20px}
+.link-grid{
+  display:grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap:10px;
+}
+
+.link-item{display:flex;align-items:center;gap:10px;padding:14px;background:var(--card);border-radius:12px;text-decoration:none;color:var(--text);box-shadow:none}
+.link-icon{width:32px;height:32px;display:flex;align-items:center;justify-content:center;background:var(--main);color:#fff;border-radius:8px;font-weight:bold}
+.back-btn{position:fixed;top:20px;left:20px;width:40px;height:40px;border-radius:50px;background:var(--main);color:#fff;border:none;display:none;align-items:center;justify-content:center;cursor:pointer;z-index:9999}
+.back-btn.show{display:flex}
+
+/* 永久强制显示版权 */
+.footer{
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  text-align:center !important;
+  margin-top:60px !important;
+  color:var(--sub) !important;
+  font-size:14px !important;
+  padding: 20px 0 !important;
+  width: 100% !important;
+  position: relative !important;
+}
+
+.login-modal,.admin-modal{position:fixed;inset:0;background:rgba(0,0,0,0.8);display:none;align-items:center;justify-content:center;z-index:99999}
+.login-box{background:var(--card);padding:40px;border-radius:20px;width:400px;text-align:center}
 .login-box input{width:100%;padding:14px;margin:8px 0;border-radius:12px;border:1px solid var(--border)}
 .login-box button{padding:14px 30px;margin-top:10px;border-radius:12px;background:var(--main);color:#fff;border:none;width:100%}
-.admin-modal{position:fixed;inset:0;background:var(--bg);z-index:9999;display:none}
-.admin-wrap{display:flex;height:100vh;width:100vw}
-.admin-sidebar{width:220px;background:#1e293b;color:#fff;padding:20px}
-.admin-sidebar h2{margin-bottom:30px;text-align:center}
-.menu-btn{width:100%;padding:14px;background:transparent;color:#fff;border:none;border-radius:8px;text-align:left;margin-bottom:6px;cursor:pointer}
-.menu-btn.active{background:#2563eb}
-.admin-main{flex:1;background:var(--bg);padding:30px;overflow-y:auto}
-.admin-title{font-size:24px;margin-bottom:20px}
-.admin-panel{display:none}
-.admin-panel.active{display:block}
-input,select{width:100%;padding:14px;margin:8px 0;border-radius:12px;border:1px solid var(--border);background:var(--card);color:var(--text)}
-button{padding:12px 16px;border-radius:10px;border:none;background:var(--main);color:#fff;cursor:pointer;margin-right:6px;margin-top:6px}
 .btn-red{background:#ef4444}
-.drag-item{background:var(--card);padding:14px;border-radius:12px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;cursor:move}
-#adPreviewList{display:flex;flex-wrap:wrap;gap:10px;margin-top:10px}
-.img-preview{max-width:140px;border-radius:10px}
-.move-select{max-width:150px}
+.admin-modal{display:none!important}
+.admin-modal.show{display:flex!important}
+.admin-box{width:90%;max-width:1200px;height:90vh;background:var(--card);border-radius:20px;display:flex;overflow:hidden}
+.admin-left{width:220px;background:#1e293b;color:#fff;padding:20px}
+.admin-left button{width:100%;padding:14px;background:transparent;color:#fff;border:none;text-align:left;margin-bottom:6px;border-radius:8px;cursor:pointer}
+.admin-left button.active{background:#2563eb}
+.admin-right{flex:1;padding:30px;overflow-y:auto;background:var(--bg)}
+.admin-title{font-size:24px;margin-bottom:20px}
+.admin-page{display:none}
+.admin-page.show{display:block}
+input,select{width:100%;padding:14px;margin:8px 0;border-radius:12px;border:1px solid var(--border);background:var(--card);color:var(--text)}
+button{padding:12px 16px;border-radius:10px;border:none;background:var(--main);color:#fff;cursor:pointer;margin-right:6px}
+
+.item{background:var(--card);padding:14px;border-radius:12px;margin-bottom:8px;display:flex;justify-content:space-between;align-items:center;cursor:grab}
+.item:active{cursor:grabbing}
+.item.dragging{opacity:0.5;background:#e2e8f0}
+
+.color-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:10px 0}
+.color-item{height:44px;border-radius:8px;cursor:pointer;border:2px solid transparent}
+.color-item.active{border-color:#000}
 </style>
 </head>
-
 <body>
 
-<!-- ✅ 左上角返回按钮 -->
 <button class="back-btn" id="backBtn" onclick="goBack()">←</button>
 
-<div class="ad-modal" id="adModal">
-    <div class="ad-box">
-        <button class="ad-close" id="adClose">×</button>
-        <div id="adContainer"></div>
-    </div>
-</div>
-
 <div class="login-modal" id="loginModal">
-    <div class="login-box">
-        <h2>🔐 管理员登录</h2>
-        <input id="adminUser" placeholder="请输入管理员账号">
-        <input type="password" id="adminPwd" placeholder="请输入管理员密码">
-        <button onclick="checkLogin()">登录后台</button>
-        <button class="btn-red" onclick="closeLogin()" style="margin-top:8px">取消</button>
-    </div>
+  <div class="login-box">
+    <h2>🔐 管理员登录</h2>
+    <input id="adminUser" placeholder="账号">
+    <input type="password" id="pword" placeholder="密码">
+    <button onclick="checkLogin()">登录</button>
+    <button class="btn-red" onclick="closeLogin()">取消</button>
+  </div>
 </div>
 
 <div class="admin-modal" id="adminModal">
-    <div class="admin-wrap">
-        <div class="admin-sidebar">
-            <h2>管理后台</h2>
-            <button class="menu-btn active" onclick="switchMenu(0)">基础设置</button>
-            <button class="menu-btn" onclick="switchMenu(1)">广告管理</button>
-            <button class="menu-btn" onclick="switchMenu(2)">分类管理</button>
-            <button class="menu-btn" onclick="switchMenu(3)">添加网站</button>
-            <button class="menu-btn" onclick="switchMenu(4)">全部网站</button>
-            <button class="btn-red" onclick="closeAdmin()" style="width:100%;margin-top:30px;">退出后台</button>
-        </div>
-        <div class="admin-main">
-            <div id="panel0" class="admin-panel active">
-                <div class="admin-title">基础设置</div>
-                <input id="title" placeholder="网站标题">
-                <input id="contact" placeholder="站长联系方式">
-                <input id="copyright" placeholder="底部版权">
-                <button onclick="saveAll()">保存设置</button>
-            </div>
-            <div id="panel1" class="admin-panel">
-                <div class="admin-title">广告管理</div>
-                <input type="file" id="adUpload" multiple accept="image/*">
-                <input id="adLink" placeholder="广告跳转链接">
-                <div id="adPreviewList"></div>
-                <button onclick="saveAll()">保存广告</button>
-            </div>
-            <div id="panel2" class="admin-panel">
-                <div class="admin-title">分类管理</div>
-                <input id="catName" placeholder="分类名称">
-                <button onclick="addCategory()">新增分类</button>
-                <div id="catSortList" style="margin-top:15px"></div>
-                <button onclick="saveAll()">保存排序</button>
-            </div>
-            <div id="panel3" class="admin-panel">
-                <div class="admin-title">添加网站</div>
-                <select id="catSelect"></select>
-                <input id="siteName" placeholder="网站名称">
-                <input id="siteUrl" placeholder="网址 https://">
-                <button onclick="autoGetIcon()">获取图标</button>
-                <input id="siteIcon" placeholder="图标文字/链接">
-                <input id="siteColor" placeholder="图标颜色">
-                <button onclick="addSite()">添加网站</button>
-                <div id="siteSortList" style="margin-top:15px"></div>
-                <button onclick="saveAll()">保存网站</button>
-            </div>
-            <div id="panel4" class="admin-panel">
-                <div class="admin-title">全部网站管理</div>
-                <div id="allSiteList" style="margin-top:15px"></div>
-                <button onclick="saveAll()">保存修改</button>
-            </div>
-        </div>
+  <div class="admin-box">
+    <div class="admin-left">
+      <h2>管理后台</h2><br>
+      <button class="active" onclick="goPage(1)">基础设置</button>
+      <button onclick="goPage(2)">分类管理</button>
+      <button onclick="goPage(3)">添加网站</button>
+      <button onclick="goPage(4)">全部网站</button>
+      <br><br>
+      <button class="btn-red" onclick="closeAdmin()">退出后台</button>
     </div>
+    <div class="admin-right">
+      <div class="admin-page show" id="page1">
+        <div class="admin-title">基础设置</div>
+        <input id="title" placeholder="网站标题">
+        <input id="contact" placeholder="联系方式">
+        <input id="copyright" placeholder="版权声明（纯文字即可）">
+        <button onclick="saveConfig()">保存</button>
+      </div>
+      <div class="admin-page" id="page2">
+        <div class="admin-title">分类管理（支持拖拽排序）</div>
+        <input id="catName" placeholder="分类名称">
+        <button onclick="addCat()">新增分类</button>
+        <div id="catList" style="margin-top:16px"></div>
+      </div>
+      <div class="admin-page" id="page3">
+        <div class="admin-title">添加网站</div>
+        <select id="catSelect"></select>
+        <input id="siteName" placeholder="网站名称">
+        <input id="siteUrl" placeholder="网址 https://">
+        <input id="siteIcon" placeholder="图标文字（1个字）">
+        <input id="siteColor" placeholder="点击下方颜色" readonly>
+        <div class="color-grid" id="colorGrid"></div>
+        <button onclick="addSite()">添加网站</button>
+      </div>
+      <div class="admin-page" id="page4">
+        <div class="admin-title">全部网站</div>
+        <div id="allSiteList" style="margin-top:16px"></div>
+      </div>
+    </div>
+  </div>
 </div>
 
-<button style="position:fixed;bottom:20px;right:20px;width:56px;height:56px;border-radius:50%;background:var(--main);color:#fff;font-size:22px;cursor:pointer;z-index:99;" onclick="showLogin()">⚙️</button>
+<button style="position:fixed;bottom:20px;right:20px;padding:14px 22px;border-radius:12px;background:var(--main);color:#fff;font-size:16px;cursor:pointer;z-index:99999" onclick="showLogin()">管理员入口</button>
 
-<div class="container">
+<div class="wrap">
+  <div class="fixed-header">
     <div class="header">
-        <button class="mode-btn" onclick="toggleMode()">🌙 切换模式</button>
-        <div class="logo" id="logo"></div>
-        <div class="contact" id="contactShow"></div>
+      <button class="mode-btn" onclick="toggleMode()">🌙 切换模式</button>
+      <div class="logo" id="logo">全能导航系统</div>
+      <div class="contact" id="contactShow">站长微信：jiangnan</div>
     </div>
     <div class="search-box">
-        <div class="search-main">
-            <input class="search-input" id="kw" placeholder="搜索网站...">
-            <button class="search-btn" onclick="doSearch()">搜索</button>
-        </div>
+      <div class="search-main">
+        <input class="search-input" id="kw" placeholder="搜索网站...">
+        <button class="search-btn" onclick="doSearch()">搜索</button>
+      </div>
     </div>
+  </div>
+
+  <div class="container">
     <div id="categoryContainer"></div>
-    <div class="footer">
-        <div id="copyright"></div>
-    </div>
+    <div class="footer" id="copyright"></div>
+  </div>
 </div>
 
 <script>
-// ==============================================
-// ✅ 强制清空旧缓存 + 加载你要求的所有内容
-// ==============================================
-localStorage.removeItem("NAV_DATA"); // 强制清空旧数据
-
-let defaultData = {
-    title:"全能导航系统",
-    contact:"站长微信：xxxxx",
-    copyright:"© 2025 版权所有",
-    ads:[],
-    adLink:"https://www.baidu.com",
-    categories:[
-        {id:1,name:"免费影视资源"},
-        {id:2,name:"AI配音工具"},
-        {id:3,name:"AI文本工具（国内）"},
-        {id:4,name:"AI文本工具（国外：需要科学上网）"},
-        {id:5,name:"AI绘画工具"},
-        {id:6,name:"AI视频工具"},
-        {id:7,name:"AI指令提示词"},
-        {id:8,name:"破解版软件"}
-    ],
-    sites:[
-        // 免费影视
-        {cid:1,name:"喵眼看剧",url:"http://dyss66.top/",icon:"影",color:"#4c6fff"},
-        {cid:1,name:"电影先生",url:"https://dyxs688.top/",icon:"影",color:"#4c6fff"},
-        
-        // AI配音
-        {cid:2,name:"配音神器手机版",url:"https://api.peiyinshenqi.club/u/eshzC",icon:"音",color:"#22c55e"},
-        {cid:2,name:"配音神器电脑版",url:"https://peiyinshenqi.com?rr=qjmprk5oPe",icon:"音",color:"#22c55e"},
-        {cid:2,name:"逗哥配音",url:"https://www.douge.com/index?from=BFfiAj",icon:"音",color:"#22c55e"},
-        
-        // AI文本 国内
-        {cid:3,name:"文心一言",url:"https://yiyan.baidu.com/",icon:"文",color:"#0ea5e9"},
-        {cid:3,name:"通义千问",url:"https://www.qianwen.com/",icon:"文",color:"#0ea5e9"},
-        {cid:3,name:"智谱清言",url:"https://chatglm.cn/main/alltoolsdetail?lang=zh",icon:"文",color:"#0ea5e9"},
-        {cid:3,name:"Kimi",url:"https://www.kimi.com/",icon:"文",color:"#0ea5e9"},
-        {cid:3,name:"豆包",url:"https://www.doubao.com/chat/",icon:"文",color:"#0ea5e9"},
-        {cid:3,name:"Deepseek",url:"https://www.deepseek.com/",icon:"文",color:"#0ea5e9"},
-        
-        // AI文本 国外
-        {cid:4,name:"ChatGPT",url:"http://chat.openai.com/",icon:"文",color:"#8b5cf6"},
-        {cid:4,name:"Claude",url:"https://www.anthropic.com/product",icon:"文",color:"#8b5cf6"},
-        {cid:4,name:"Bard",url:"https://bard.google.com/",icon:"文",color:"#8b5cf6"},
-        {cid:4,name:"Copilot",url:"https://copilot.microsoft.com/",icon:"文",color:"#8b5cf6"},
-        {cid:4,name:"Grok",url:"https://grok.x.ai/",icon:"文",color:"#8b5cf6"},
-        {cid:4,name:"Poe",url:"https://poe.com/login",icon:"文",color:"#8b5cf6"},
-        {cid:4,name:"Notion AI",url:"https://www.notion.so/product/ai",icon:"文",color:"#8b5cf6"},
-        
-        // AI绘画
-        {cid:5,name:"Midjourney",url:"https://www.midjourney.com/",icon:"画",color:"#f97316"},
-        {cid:5,name:"Stable Diffusion",url:"https://stablediffusionweb.com/",icon:"画",color:"#f97316"},
-        {cid:5,name:"Canva",url:"https://www.canva.cn/",icon:"画",color:"#f97316"},
-        {cid:5,name:"Clipdrop",url:"https://clipdrop.co/",icon:"画",color:"#f97316"},
-        {cid:5,name:"标小志",url:"https://www.logosc.cn/",icon:"画",color:"#f97316"},
-        {cid:5,name:"稿定智能设计",url:"https://www.gaoding.com/ai/design",icon:"画",color:"#f97316"},
-        
-        // AI视频
-        {cid:6,name:"Runway",url:"https://app.runwayml.com/login",icon:"视",color:"#ec4899"},
-        {cid:6,name:"Pika",url:"https://pika.art/",icon:"视",color:"#ec4899"},
-        {cid:6,name:"HeyGen",url:"https://www.heygen.com/",icon:"视",color:"#ec4899"},
-        {cid:6,name:"即梦",url:"https://jimeng.jianying.com/",icon:"视",color:"#ec4899"},
-        {cid:6,name:"可灵",url:"https://klingai.com/",icon:"视",color:"#ec4899"},
-
-        // AI指令提示词
-        {cid:7,name:"暖心治愈情感文案",url:"https://pan.quark.cn/s/cdd4229159e3",icon:"词",color:"#22c55e"},
-        {cid:7,name:"民间故事小说",url:"https://pan.quark.cn/s/67462a93749a",icon:"词",color:"#22c55e"},
-        {cid:7,name:"AI生成PPT",url:"https://pan.quark.cn/s/6c66a367d4a6",icon:"词",color:"#22c55e"},
-        {cid:7,name:"AI生成散文",url:"https://pan.quark.cn/s/4fff63e6de82",icon:"词",color:"#22c55e"},
-        {cid:7,name:"AI写小说指令",url:"https://pan.quark.cn/s/74fa73435cba",icon:"词",color:"#22c55e"},
-        {cid:7,name:"爆款短视频脚本",url:"https://pan.quark.cn/s/6ad648b97b0b",icon:"词",color:"#22c55e"},
-        {cid:7,name:"爆款文案优化",url:"https://pan.quark.cn/s/4ad3e2e72f7c",icon:"词",color:"#22c55e"},
-        {cid:7,name:"播客整理助手",url:"https://pan.quark.cn/s/1fe108c8a6ea",icon:"词",color:"#22c55e"},
-        {cid:7,name:"爆款作品黄金发布时间",url:"https://pan.quark.cn/s/bdd80614d946",icon:"词",color:"#22c55e"},
-        {cid:7,name:"对标博主账号拆解",url:"https://pan.quark.cn/s/21be77ee0c4d",icon:"词",color:"#22c55e"},
-        {cid:7,name:"单词记忆【指令+教程】",url:"https://pan.quark.cn/s/076f97919474",icon:"词",color:"#22c55e"},
-        {cid:7,name:"读书博主书单号文案",url:"https://pan.quark.cn/s/b4baf606abab",icon:"词",color:"#22c55e"},
-        {cid:7,name:"打造个人IP文案指令",url:"https://pan.quark.cn/s/c53e543139c8",icon:"词",color:"#22c55e"},
-        {cid:7,name:"仿写名人语录",url:"https://pan.quark.cn/s/9a60bcd23e0f",icon:"词",color:"#22c55e"},
-        {cid:7,name:"仿写文章指令",url:"https://pan.quark.cn/s/56d883a84fdc",icon:"词",color:"#22c55e"},
-        {cid:7,name:"公文写作",url:"https://pan.quark.cn/s/e45b09799082",icon:"词",color:"#22c55e"},
-        {cid:7,name:"公众号推文指令",url:"https://pan.quark.cn/s/543ab402e845",icon:"词",color:"#22c55e"},
-        {cid:7,name:"高质量广告语指令",url:"https://pan.quark.cn/s/d3f8eba8370d",icon:"词",color:"#22c55e"},
-        {cid:7,name:"会议纪要指令",url:"https://pan.quark.cn/s/49d1f7cab54a",icon:"词",color:"#22c55e"},
-        {cid:7,name:"AI教案板书指令",url:"https://pan.quark.cn/s/d729f9fdae56",icon:"词",color:"#22c55e"},
-        {cid:7,name:"故事性文案指令",url:"https://pan.quark.cn/s/0b07552e34d3",icon:"词",color:"#22c55e"},
-        {cid:7,name:"评论区金句指令",url:"https://pan.quark.cn/s/2ec2898a0664",icon:"词",color:"#22c55e"},
-        {cid:7,name:"朋友圈软广文案",url:"https://pan.quark.cn/s/b4b84f643028",icon:"词",color:"#22c55e"},
-        {cid:7,name:"情绪化爆款标题指令",url:"https://pan.quark.cn/s/7cd5d11979c2",icon:"词",color:"#22c55e"},
-        {cid:7,name:"小红书爆款文案指令",url:"https://pan.quark.cn/s/fa30232fc224",icon:"词",color:"#22c55e"},
-        {cid:7,name:"小红书种草文案指令",url:"https://pan.quark.cn/s/98a5c32bccea",icon:"词",color:"#22c55e"},
-        {cid:7,name:"项目复盘报告指令",url:"https://pan.quark.cn/s/acf615b5d36b",icon:"词",color:"#22c55e"},
-
-        // 破解版软件
-        {cid:8,name:"视频批量剪辑",url:"https://pan.quark.cn/s/b346efb98b1d",icon:"工",color:"#f97316"},
-        {cid:8,name:"网页下载器CR",url:"https://pan.quark.cn/s/e1123b82c755",icon:"工",color:"#f97316"},
-        {cid:8,name:"聊天对话生成工具",url:"https://pan.quark.cn/s/cff64fed49d0",icon:"工",color:"#f97316"},
-        {cid:8,name:"剪映免会员版本",url:"https://pan.quark.cn/s/05d96237de79",icon:"工",color:"#f97316"},
-        {cid:8,name:"直播工具OBS",url:"https://pan.quark.cn/s/5fd73f7b1c00",icon:"工",color:"#f97316"},
-        {cid:8,name:"视频全自动批量剪辑",url:"https://pan.quark.cn/s/3a4ecfcdd784",icon:"工",color:"#f97316"}
-    ]
+let data = {
+  title:"全能导航系统",
+  contact:"站长微信：jiangnan",
+  copyright:"© 2025 导航系统 版权所有",
+  categories:[
+    {id:1,name:"免费影视资源"},
+    {id:2,name:"AI配音工具"},
+    {id:3,name:"AI文本工具（国内）"},
+    {id:4,name:"AI文本工具（国外：需要科学上网）"},
+    {id:5,name:"AI绘画工具"},
+    {id:6,name:"AI视频工具"},
+    {id:7,name:"AI指令提示词"},
+    {id:8,name:"破解版软件"}
+  ],
+  sites:[
+    {cid:1,name:"喵眼看剧",url:"http://dyss66.top/",icon:"影",color:"#4c6fff"},
+    {cid:1,name:"电影先生",url:"https://dyxs688.top/",icon:"影",color:"#4c6fff"},
+    {cid:2,name:"配音神器手机版",url:"https://api.peiyinshenqi.club/u/eshzC",icon:"音",color:"#22c55e"},
+    {cid:2,name:"配音神器电脑版",url:"https://peiyinshenqi.com?rr=qjmprk5oPe",icon:"音",color:"#22c55e"},
+    {cid:2,name:"逗哥配音",url:"https://www.douge.com/index?from=BFfiAj",icon:"音",color:"#22c55e"},
+    {cid:3,name:"文心一言",url:"https://yiyan.baidu.com/",icon:"文",color:"#0ea5e9"},
+    {cid:3,name:"通义千问",url:"https://www.qianwen.com/",icon:"文",color:"#0ea5e9"},
+    {cid:3,name:"智谱清言",url:"https://chatglm.cn/main/alltoolsdetail?lang=zh",icon:"文",color:"#0ea5e9"},
+    {cid:3,name:"Kimi",url:"https://www.kimi.com/",icon:"文",color:"#0ea5e9"},
+    {cid:3,name:"豆包",url:"https://www.doubao.com/chat/",icon:"文",color:"#0ea5e9"},
+    {cid:3,name:"Deepseek",url:"https://www.deepseek.com/",icon:"文",color:"#0ea5e9"},
+    {cid:4,name:"ChatGPT",url:"http://chat.openai.com/",icon:"文",color:"#8b5cf6"},
+    {cid:4,name:"Claude",url:"https://www.anthropic.com/product",icon:"文",color:"#8b5cf6"},
+    {cid:4,name:"Bard",url:"https://bard.google.com/",icon:"文",color:"#8b5cf6"},
+    {cid:4,name:"Copilot",url:"https://copilot.microsoft.com/",icon:"文",color:"#8b5cf6"},
+    {cid:4,name:"Grok",url:"https://grok.x.ai/",icon:"文",color:"#8b5cf6"},
+    {cid:4,name:"Poe",url:"https://poe.com/login",icon:"文",color:"#8b5cf6"},
+    {cid:4,name:"Notion AI",url:"https://www.notion.so/product/ai",icon:"文",color:"#8b5cf6"},
+    {cid:5,name:"Midjourney",url:"https://www.midjourney.com/",icon:"画",color:"#f97316"},
+    {cid:5,name:"Stable Diffusion",url:"https://stablediffusionweb.com/",icon:"画",color:"#f97316"},
+    {cid:5,name:"Canva",url:"https://www.canva.cn/",icon:"画",color:"#f97316"},
+    {cid:5,name:"Clipdrop",url:"https://clipdrop.co/",icon:"画",color:"#f97316"},
+    {cid:5,name:"标小志",url:"https://www.logosc.cn/",icon:"画",color:"#f97316"},
+    {cid:5,name:"稿定智能设计",url:"https://www.gaoding.com/ai/design",icon:"画",color:"#f97316"},
+    {cid:6,name:"Runway",url:"https://app.runwayml.com/login",icon:"视",color:"#ec4899"},
+    {cid:6,name:"Pika",url:"https://pika.art/",icon:"视",color:"#ec4899"},
+    {cid:6,name:"HeyGen",url:"https://www.heygen.com/",icon:"视",color:"#ec4899"},
+    {cid:6,name:"即梦",url:"https://jimeng.jianying.com/",icon:"视",color:"#ec4899"},
+    {cid:6,name:"可灵",url:"https://klingai.com/",icon:"视",color:"#ec4899"},
+    {cid:7,name:"暖心治愈情感文案",url:"https://pan.quark.cn/s/cdd4229159e3",icon:"词",color:"#22c55e"},
+    {cid:7,name:"民间故事小说",url:"https://pan.quark.cn/s/67462a93749a",icon:"词",color:"#22c55e"},
+    {cid:7,name:"AI生成PPT",url:"https://pan.quark.cn/s/6c66a367d4a6",icon:"词",color:"#22c55e"},
+    {cid:7,name:"AI生成散文",url:"https://pan.quark.cn/s/4fff63e6de82",icon:"词",color:"#22c55e"},
+    {cid:7,name:"AI写小说指令",url:"https://pan.quark.cn/s/74fa73435cba",icon:"词",color:"#22c55e"},
+    {cid:7,name:"爆款短视频脚本",url:"https://pan.quark.cn/s/6ad648b97b0b",icon:"词",color:"#22c55e"},
+    {cid:7,name:"爆款文案优化",url:"https://pan.quark.cn/s/4ad3e2e72f7c",icon:"词",color:"#22c55e"},
+    {cid:7,name:"播客整理助手",url:"https://pan.quark.cn/s/1fe108c8a6ea",icon:"词",color:"#22c55e"},
+    {cid:7,name:"爆款作品黄金发布时间",url:"https://pan.quark.cn/s/bdd80614d946",icon:"词",color:"#22c55e"},
+    {cid:7,name:"对标博主账号拆解",url:"https://pan.quark.cn/s/21be77ee0c4d",icon:"词",color:"#22c55e"},
+    {cid:7,name:"单词记忆【指令+教程】",url:"https://pan.quark.cn/s/076f97919474",icon:"词",color:"#22c55e"},
+    {cid:7,name:"读书博主书单号文案",url:"https://pan.quark.cn/s/b4baf606abab",icon:"词",color:"#22c55e"},
+    {cid:7,name:"打造个人IP文案指令",url:"https://pan.quark.cn/s/c53e543139c8",icon:"词",color:"#22c55e"},
+    {cid:7,name:"仿写名人语录",url:"https://pan.quark.cn/s/9a60bcd23e0f",icon:"词",color:"#22c55e"},
+    {cid:7,name:"仿写文章指令",url:"https://pan.quark.cn/s/56d88a84fdc",icon:"词",color:"#22c55e"},
+    {cid:7,name:"公文写作",url:"https://pan.quark.cn/s/e45b09799082",icon:"词",color:"#22c55e"},
+    {cid:7,name:"公众号推文指令",url:"https://pan.quark.cn/s/543ab402e845",icon:"词",color:"#22c55e"},
+    {cid:7,name:"高质量广告语指令",url:"https://pan.quark.cn/s/d3f8eba8370d",icon:"词",color:"#22c55e"},
+    {cid:7,name:"会议纪要指令",url:"https://pan.quark.cn/s/49d1f7cab54a",icon:"词",color:"#22c55e"},
+    {cid:7,name:"AI教案板书指令",url:"https://pan.quark.cn/s/d729f9fdae56",icon:"词",color:"#22c55e"},
+    {cid:7,name:"故事性文案指令",url:"https://pan.quark.cn/s/0b07552e34d3",icon:"词",color:"#22c55e"},
+    {cid:7,name:"评论区金句指令",url:"https://pan.quark.cn/s/2ec2898a0664",icon:"词",color:"#22c55e"},
+    {cid:7,name:"朋友圈软广文案",url:"https://pan.quark.cn/s/b4b84f643028",icon:"词",color:"#22c55e"},
+    {cid:7,name:"情绪化爆款标题指令",url:"https://pan.quark.cn/s/7cd5d11979c2",icon:"词",color:"#22c55e"},
+    {cid:7,name:"小红书爆款文案指令",url:"https://pan.quark.cn/s/fa30232fc224",icon:"词",color:"#22c55e"},
+    {cid:7,name:"小红书种草文案指令",url:"https://pan.quark.cn/s/98a5c32bccea",icon:"词",color:"#22c55e"},
+    {cid:7,name:"项目复盘报告指令",url:"https://pan.quark.cn/s/acf615b5d36b",icon:"词",color:"#22c55e"},
+    {cid:8,name:"视频批量剪辑",url:"https://pan.quark.cn/s/b346efb98b1d",icon:"工",color:"#f97316"},
+    {cid:8,name:"网页下载器CR",url:"https://pan.quark.cn/s/e1123b82c755",icon:"工",color:"#f97316"},
+    {cid:8,name:"聊天对话生成工具",url:"https://pan.quark.cn/s/cff64fed49d0",icon:"工",color:"#f97316"},
+    {cid:8,name:"剪映免会员版本",url:"https://pan.quark.cn/s/05d96237de79",icon:"工",color:"#f97316"},
+    {cid:8,name:"直播工具OBS",url:"https://pan.quark.cn/s/5fd73f7b1c00",icon:"工",color:"#f97316"},
+    {cid:8,name:"视频全自动批量剪辑",url:"https://pan.quark.cn/s/3a4ecfcdd784",icon:"工",color:"#f97316"}
+  ]
 };
 
-let data = defaultData;
-const backBtn = document.getElementById("backBtn");
-
-if(localStorage.getItem("theme") === "dark"){
-    document.documentElement.setAttribute("data-theme", "dark");
+// 切换模式
+function toggleMode() {
+  document.documentElement.classList.toggle('dark');
+  localStorage.setItem('theme', document.documentElement.classList.contains('dark') ? 'dark' : 'light');
 }
 
-// ✅ 返回主页功能
-function goBack(){
-    document.getElementById("kw").value = "";
-    renderCategories();
-    backBtn.classList.remove("show"); // 隐藏返回按钮
+// 记忆主题
+const savedTheme = localStorage.getItem('theme');
+if (savedTheme === 'dark') {
+  document.documentElement.classList.add('dark');
 }
 
-function render(){
-    document.getElementById("logo").innerText = data.title;
-    document.getElementById("contactShow").innerText = data.contact;
-    document.getElementById("copyright").innerText = data.copyright;
-    renderCategories();
-    initAdModal();
-}
+// 初始化
 render();
+loadConfig();
 
-// ✅ 广告加载修复
-function initAdModal(){
-    if(!data.ads || data.ads.length === 0) return;
-    const modal = document.getElementById("adModal");
-    const container = document.getElementById("adContainer");
-    container.innerHTML = "";
-
-    data.ads.forEach((img, i) => {
-        let imgEl = document.createElement("img");
-        imgEl.src = img;
-        imgEl.className = "ad-img" + (i === 0 ? " active" : "");
-        imgEl.onclick = () => window.open(data.adLink || "https://www.baidu.com", "_blank");
-        container.appendChild(imgEl);
+// 渲染页面
+function render(){
+  let html = "";
+  data.categories.forEach(cat=>{
+    html += `<div class="cat">
+               <div class="cat-title">${cat.name}</div>
+               <div class="link-grid">`;
+    data.sites.filter(s=>s.cid==cat.id).forEach(s=>{
+      html += `<a class="link-item" href="${s.url}" target="_blank">
+                <div class="link-icon" style="background:${s.color}">${s.icon}</div>
+                <span>${s.name}</span>
+               </a>`;
     });
-
-    setTimeout(() => { modal.style.display = "flex"; }, 800);
-    let index = 0;
-    setInterval(() => {
-        let imgs = document.querySelectorAll(".ad-img");
-        if(imgs.length < 2) return;
-        imgs.forEach(x => x.classList.remove("active"));
-        index = (index + 1) % imgs.length;
-        imgs[index].classList.add("active");
-    }, 3000);
+    html += `</div></div>`;
+  });
+  document.getElementById("categoryContainer").innerHTML = html;
 }
-document.getElementById("adClose").onclick = () => document.getElementById("adModal").style.display = "none";
 
-function showLogin(){ document.getElementById("loginModal").style.display = "flex"; }
-function closeLogin(){ document.getElementById("loginModal").style.display = "none"; }
-function openAdmin(){ document.getElementById("adminModal").style.display = "flex"; }
-function closeAdmin(){ document.getElementById("adminModal").style.display = "none"; }
+// 搜索
+function doSearch(){
+  let key = document.getElementById("kw").value.toLowerCase();
+  if(!key){render();loadConfig();document.getElementById("backBtn").classList.remove("show");return}
+  let list = data.sites.filter(s=>s.name.toLowerCase().includes(key));
+  let html = `<div class="cat"><div class="cat-title">搜索结果</div><div class="link-grid">`;
+  list.forEach(s=>{html+=`<a class="link-item" href="${s.url}" target="_blank"><div class="link-icon" style="background:${s.color}">${s.icon}</div>${s.name}</a>`});
+  html += "</div></div>";
+  document.getElementById("categoryContainer").innerHTML = html;
+  document.getElementById("backBtn").classList.add("show");
+}
+
+// 返回
+function goBack(){
+  document.getElementById("kw").value="";
+  render();
+  loadConfig();
+  document.getElementById("backBtn").classList.remove("show");
+}
+
+// ========== 核心修复：版权强制显示（纯文本、无链接） ==========
+function loadConfig(){
+  document.getElementById("logo").innerText = data.title;
+  document.getElementById("contactShow").innerText = data.contact;
+  
+  // 纯文本显示，永久可见
+  document.getElementById("copyright").innerText = data.copyright;
+  document.getElementById("copyright").style.display = "block";
+}
+
+// 保存配置
+function saveConfig(){
+  data.title = document.getElementById("title").value;
+  data.contact = document.getElementById("contact").value;
+  data.copyright = document.getElementById("copyright").value;
+  loadConfig();
+  render();
+  alert("保存成功！版权已显示");
+}
+
+// 后台功能
+function showLogin(){document.getElementById("loginModal").style.display="flex"}
+function closeLogin(){document.getElementById("loginModal").style.display="none"}
+function openAdmin(){document.getElementById("adminModal").classList.add("show");loadAll()}
+function closeAdmin(){document.getElementById("adminModal").classList.remove("show")}
 
 function checkLogin(){
-    let user = document.getElementById("adminUser").value.trim();
-    let pwd = document.getElementById("adminPwd").value.trim();
-    if(user === "江南大王" && pwd === "zxcvbnm"){
-        closeLogin();
-        openAdmin();
-        loadAdminData();
-        switchMenu(0);
-    }else{
-        alert("账号或密码错误！");
-    }
+  let u = document.getElementById("adminUser").value;
+  let p = document.getElementById("pword").value;
+  if(u==="江南大王" && p==="zxcvbnm"){closeLogin();openAdmin()}else{alert("账号密码错误")}
 }
 
-function switchMenu(index){
-    document.querySelectorAll(".admin-panel").forEach((p, i) => p.classList.toggle("active", i === index));
-    document.querySelectorAll(".menu-btn").forEach((b, i) => b.classList.toggle("active", i === index));
-    if(index === 4) loadAllSiteList();
+function goPage(n){
+  document.querySelectorAll(".admin-page").forEach(x=>x.classList.remove("show"));
+  document.querySelectorAll(".admin-left button").forEach(x=>x.classList.remove("active"));
+  document.getElementById(`page${n}`).classList.add("show");
+  event.target.classList.add("active");
 }
 
-function loadAdminData(){
-    document.getElementById("title").value = data.title;
-    document.getElementById("contact").value = data.contact;
-    document.getElementById("copyright").value = data.copyright;
-    document.getElementById("adLink").value = data.adLink || "";
-    refreshAdPreview();
-    refreshCatList();
-    refreshSiteList();
-    loadAllSiteList();
+function loadAll(){
+  document.getElementById("title").value = data.title;
+  document.getElementById("contact").value = data.contact;
+  document.getElementById("copyright").value = data.copyright;
+  refreshCat();
+  refreshSelect();
+  refreshAllSite();
 }
 
-document.getElementById("adUpload").onchange = (e) => {
-    for(let file of e.target.files){
-        let reader = new FileReader();
-        reader.onload = (ev) => { data.ads.push(ev.target.result); refreshAdPreview(); }
-        reader.readAsDataURL(file);
-    }
-}
-function refreshAdPreview(){
-    let html = "";
-    data.ads.forEach((img, i) => {
-        html += `<div style="position:relative"><img src="${img}" class="img-preview"><button onclick="data.ads.splice(${i},1);refreshAdPreview()" style="position:absolute;top:-6px;right:-6px;width:24px;height:24px;padding:0;background:#ef4444;border-radius:50%">×</button></div>`;
-    });
-    document.getElementById("adPreviewList").innerHTML = html;
+// 分类拖拽
+let draggedItem = null;
+function addCat(){
+  let n = document.getElementById("catName").value.trim();
+  if(!n)return;
+  data.categories.push({id:Date.now(),name:n});
+  document.getElementById("catName").value="";
+  refreshCat();refreshSelect();
 }
 
-function addCategory(){
-    let name = document.getElementById("catName").value.trim();
-    if(name){ data.categories.push({id:Date.now(), name:name}); document.getElementById("catName").value = ""; refreshCatList(); }
-}
-function editCat(id){
-    let cat = data.categories.find(x => x.id == id);
-    let newName = prompt("修改分类名称", cat.name);
-    if(newName){ cat.name = newName; refreshCatList(); }
-}
-function delCat(id){
-    if(confirm("删除分类会删除该分类下所有网站！")){
-        data.categories = data.categories.filter(x => x.id != id);
-        data.sites = data.sites.filter(x => x.cid != id);
-        refreshCatList(); loadAllSiteList(); renderCategories();
-    }
-}
-function refreshCatList(){
-    let html = "";
-    data.categories.forEach(cat => {
-        html += `<div class="drag-item" draggable="true"><span>${cat.name}</span><div><button onclick="editCat(${cat.id})">编辑</button><button class="btn-red" onclick="delCat(${cat.id})">删除</button></div></div>`;
-    });
-    document.getElementById("catSortList").innerHTML = html;
-    initCatDrag();
-    let opt = ""; data.categories.forEach(cat => opt += `<option value="${cat.id}">${cat.name}</option>`);
-    document.getElementById("catSelect").innerHTML = opt;
+function refreshCat(){
+  let h="";
+  data.categories.forEach((c,i)=>{
+    h+=`<div class="item" draggable="true" data-index="${i}">
+          <span>${c.name}</span>
+          <button class="btn-red" onclick="delCat(${i})">删除</button>
+        </div>`;
+  });
+  document.getElementById("catList").innerHTML = h;
+  initDrag();
 }
 
-// ========== 分类拖拽排序（不动） ==========
-function initCatDrag(){
-    const list = document.getElementById('catSortList');
-    const items = list.querySelectorAll('.drag-item');
-    let draggedIndex = -1;
-
-    items.forEach((item, index) => {
-        item.dataset.index = index;
-        item.addEventListener('dragstart', () => {
-            draggedIndex = parseInt(item.dataset.index);
-            item.style.opacity = '0.5';
-        });
-        item.addEventListener('dragend', () => {
-            item.style.opacity = '1';
-            draggedIndex = -1;
-        });
-        item.addEventListener('dragover', (e) => e.preventDefault());
-        item.addEventListener('drop', () => {
-            const targetIndex = parseInt(item.dataset.index);
-            const movedItem = data.categories.splice(draggedIndex, 1)[0];
-            data.categories.splice(targetIndex, 0, movedItem);
-            refreshCatList();
-            renderCategories();
-        });
-    });
+function initDrag(){
+  const items = document.querySelectorAll("#catList .item");
+  items.forEach(item => {
+    item.removeEventListener("dragstart", dragStart);
+    item.removeEventListener("dragover", dragOver);
+    item.removeEventListener("drop", drop);
+    item.removeEventListener("dragend", dragEnd);
+    
+    item.addEventListener("dragstart", dragStart);
+    item.addEventListener("dragover", dragOver);
+    item.addEventListener("drop", drop);
+    item.addEventListener("dragend", dragEnd);
+  });
 }
 
-function autoGetIcon(){
-    let url = document.getElementById("siteUrl").value;
-    if(url) try{ document.getElementById("siteIcon").value = `https://favicon.im/${new URL(url).hostname}`; }catch(e){}
+function dragStart(e) {
+  draggedItem = this;
+  this.classList.add("dragging");
+  e.dataTransfer.setData("text/plain", this.dataset.index);
+}
+
+function dragOver(e) { e.preventDefault(); }
+function drop(e) {
+  e.preventDefault();
+  const fromIndex = parseInt(e.dataTransfer.getData("text/plain"));
+  const toIndex = parseInt(this.dataset.index);
+  if (fromIndex !== toIndex) {
+    const moved = data.categories.splice(fromIndex, 1)[0];
+    data.categories.splice(toIndex, 0, moved);
+    refreshCat();render();refreshSelect();
+  }
+}
+function dragEnd() { this.classList.remove("dragging"); }
+
+function delCat(i){
+  data.categories.splice(i,1);
+  refreshCat();refreshSelect();render();
+}
+
+function refreshSelect(){
+  let h="";data.categories.forEach(c=>h+=`<option value="${c.id}">${c.name}</option>`);
+  document.getElementById("catSelect").innerHTML=h;
+}
+
+function makeColor(){
+  let h="";
+  ["#4c6fff","#22c55e","#0ea5e9","#8b5cf6","#f97316","#ec4899","#ef4444","#10b981","#f59e0b","#84cc16"].forEach(c=>{
+    h+=`<div class="color-item" style="background:${c}" onclick="setC('${c}')"></div>`;
+  });
+  document.getElementById("colorGrid").innerHTML=h;
+}
+function setC(c){
+  document.getElementById("siteColor").value=c;
+  document.querySelectorAll(".color-item").forEach(i=>i.classList.remove("active"));
+  event.target.classList.add("active");
 }
 
 function addSite(){
-    let cid = document.getElementById("catSelect").value;
-    let name = document.getElementById("siteName").value.trim();
-    let url = document.getElementById("siteUrl").value.trim();
-    let icon = document.getElementById("siteIcon").value || "链";
-    let color = document.getElementById("siteColor").value || "#4c6fff";
-
-    if(!cid || !name || !url) { alert("请填写完整信息！"); return; }
-
-    data.sites.push({ cid: Number(cid), name, url, icon, color });
-    
-    document.getElementById("siteName").value = "";
-    document.getElementById("siteUrl").value = "";
-    document.getElementById("siteIcon").value = "";
-    document.getElementById("siteColor").value = "";
-
-    refreshSiteList();
-    loadAllSiteList();
-    renderCategories();
+  let c = document.getElementById("catSelect").value;
+  let n = document.getElementById("siteName").value.trim();
+  let u = document.getElementById("siteUrl").value.trim();
+  let i = document.getElementById("siteIcon").value||"链";
+  let co = document.getElementById("siteColor").value||"#4c6fff";
+  if(!c||!n||!u)return;
+  data.sites.push({cid:Number(c),name:n,url:u,icon:i,color:co});
+  document.getElementById("siteName").value="";
+  document.getElementById("siteUrl").value="";
+  document.getElementById("siteIcon").value="";
+  document.getElementById("siteColor").value="";
+  alert("添加成功");
+  render();refreshAllSite();
 }
 
-function delSite(index){
-    data.sites.splice(index, 1);
-    refreshSiteList();
-    loadAllSiteList();
-    renderCategories();
+function refreshAllSite(){
+  let h="";data.sites.forEach((s,i)=>{
+    let name = data.categories.find(x=>x.id==s.cid)?.name||"未分类";
+    h+=`<div class="item"><span>${name} → ${s.name}</span><button class="btn-red" onclick="delSite(${i})">删除</button></div>`;
+  });
+  document.getElementById("allSiteList").innerHTML=h;
 }
+function delSite(i){data.sites.splice(i,1);render();refreshAllSite()}
 
-function refreshSiteList(){
-    let html = "";
-    data.sites.forEach((site, i) => {
-        let cname = data.categories.find(x => x.id == site.cid)?.name || "未分类";
-        html += `<div class="drag-item"><span>${cname} → ${site.name}</span><button class="btn-red" onclick="delSite(${i})">删除</button></div>`;
-    });
-    document.getElementById("siteSortList").innerHTML = html;
-}
-
-function loadAllSiteList(){
-    let html = "";
-    data.sites.forEach((site, i) => {
-        let options = "";
-        data.categories.forEach(c => options += `<option value="${c.id}" ${c.id==site.cid ? "selected" : ""}>${c.name}</option>`);
-        html += `<div class="drag-item"><span>${site.name}</span><div><select class="move-select" onchange="data.sites[${i}].cid=Number(this.value);loadAllSiteList();renderCategories();">${options}</select><button class="btn-red" onclick="delSite(${i})">删除</button></div></div>`;
-    });
-    document.getElementById("allSiteList").innerHTML = html;
-}
-
-// ==============================================
-// ✅ 保存后全局同步：手机 / 电脑 实时一致
-// ==============================================
-function saveAll(){
-    data.title = document.getElementById("title").value;
-    data.contact = document.getElementById("contact").value;
-    data.copyright = document.getElementById("copyright").value;
-    data.adLink = document.getElementById("adLink").value;
-    
-    // 强制保存并同步
-    localStorage.setItem("NAV_DATA", JSON.stringify(data));
-    
-    render();
-    alert("✅ 保存成功！手机/电脑已完全同步！");
-    closeAdmin();
-}
-
-function renderCategories(){
-    let html = "";
-    data.categories.forEach(cat => {
-        html += `<div class="cat"><div class="cat-title">${cat.name}</div><div class="link-grid">`;
-        data.sites.filter(s => s.cid == cat.id).forEach(s => {
-            html += `<a class="link-item" href="${s.url}" target="_blank"><div class="link-icon" style="background:${s.color}">${s.icon}</div>${s.name}</a>`;
-        });
-        html += `</div></div>`;
-    });
-    document.getElementById("categoryContainer").innerHTML = html;
-}
-
-function doSearch(){
-    let key = document.getElementById("kw").value.toLowerCase();
-    if(!key){ renderCategories(); backBtn.classList.remove("show"); return; }
-    let list = data.sites.filter(s => s.name.toLowerCase().includes(key));
-    let html = "<div class='cat'><div class='cat-title'>搜索结果</div><div class='link-grid'>";
-    list.forEach(s => { html += `<a class='link-item' href='${s.url}' target='_blank'><div class='link-icon' style='background:${s.color}'>${s.icon}</div>${s.name}</a>`; });
-    document.getElementById("categoryContainer").innerHTML = html + "</div></div>";
-    
-    // ✅ 搜索后显示左上角返回按钮
-    backBtn.classList.add("show");
-}
-
-function toggleMode(){
-    const html = document.documentElement;
-    if(html.hasAttribute("data-theme")){
-        html.removeAttribute("data-theme");
-        localStorage.setItem("theme", "light");
-    }else{
-        document.documentElement.setAttribute("data-theme","dark");
-        localStorage.setItem("theme","dark");
-    }
-}
+makeColor();
 </script>
 </body>
 </html>
