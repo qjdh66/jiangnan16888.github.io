@@ -16,10 +16,10 @@ html {
   --main:#4c6fff;
 }
 html.dark {
-  --bg:#0f172a;
+  --bg:#0f1219;
   --card:#1e293b;
   --text:#f1f5f9;
-  --sub:#cbd5e1;
+  --sub:#94a3b8;
   --border:#334155;
   --main:#5d8ff9;
 }
@@ -213,7 +213,7 @@ let data = {
     {id:5,name:"AI绘画工具"},
     {id:6,name:"AI视频工具"},
     {id:7,name:"AI指令提示词"},
-    {id:8,name:"破解版软件"}，
+    {id:8,name:"破解版软件"},
     {id:9,name:"短视频解析网站"}
   ],
   sites:[
@@ -280,10 +280,10 @@ let data = {
     {cid:8,name:"聊天对话生成工具",url:"https://pan.quark.cn/s/cff64fed49d0",icon:"工",color:"#f97316"},
     {cid:8,name:"剪映免会员版本",url:"https://pan.quark.cn/s/05d96237de79",icon:"工",color:"#f97316"},
     {cid:8,name:"直播工具OBS",url:"https://pan.quark.cn/s/5fd73f7b1c00",icon:"工",color:"#f97316"},
-    {cid:8,name:"视频全自动批量剪辑",url:"https://pan.quark.cn/s/3a4ecfcdd784",icon:"工",color:"#f97316"}，
-    {cid:9,name:"美拍解析",url:"https://meipai.iiilab.com/",icon:"短",color:"#4c6fff"}，
-    {cid:9,name:"抖鸣",url:"http://www.dyjiexi.com/",icon:"短",color:"#4c6fff"}，
-    {cid:9,name:"短视频解析",url:"https://api.spapi.cn/tool.html",icon:"短",color:"#4c6fff"} 
+    {cid:8,name:"视频全自动批量剪辑",url:"https://pan.quark.cn/s/3a4ecfcdd784",icon:"工",color:"#f97316"},
+    {cid:9,name:"美拍解析",url:"https://meipai.iiilab.com/",icon:"短",color:"#4c6fff"},
+    {cid:9,name:"抖鸣",url:"http://www.dyjiexi.com/",icon:"短",color:"#4c6fff"},
+    {cid:9,name:"短视频解析",url:"https://api.spapi.cn/tool.html",icon:"短",color:"#4c6fff"}
   ]
 };
 
@@ -374,8 +374,8 @@ function checkLogin(){
 }
 
 function goPage(n){
-  document.querySelectorAll(".admin-page").forEach(x=>x.classList.remove("show"));
-  document.querySelectorAll(".admin-left button").forEach(x=>x.classList.remove("active"));
+  document.querySelectorAll(".admin-page").forEach(x=>x.remove("show"));
+  document.querySelectorAll(".admin-left button").forEach(x=>x.remove("active"));
   document.getElementById(`page${n}`).classList.add("show");
   event.target.classList.add("active");
 }
